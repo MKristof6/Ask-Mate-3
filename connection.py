@@ -6,17 +6,21 @@ def read_data(filename):
         first_line = True
         header = []
         posts = []
-        post = {}
         for row in data:
             if not first_line:
-                for i in range(len(header)):
-                    post[header[i]] = row[i]
-                posts.append(post)
+                posts.append(read_row_data(header, row))
             else:
                 for item in row:
                     header.append(item)
                 first_line = False
         return posts, header
+
+def read_row_data(header, row):
+    post = {}
+    for i in range(len(header)):
+        post[header[i]] = row[i]
+    return post
+
 
 
 def write_data(filename, posts, header):
