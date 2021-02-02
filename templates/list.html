@@ -17,11 +17,12 @@
             <tr>
             {% for i in question.values() %}
                 <td>
-                   <a href = "/question/{{ question.id  }}"> {{ i }} </a> 
+                   <a href = "/question/{{ question.id  }}"> {{ i }} </a>
                 </td>
             {% endfor %}
             </tr>
         {% endfor %}
     </table>
+    <a href = "/add-question"> Add question </a>
 </body>
 </html>

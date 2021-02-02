@@ -24,9 +24,9 @@ def new_answer(question_id):
     return render_template("answer.html", question_id=question_id)
 
 
-@app.route("/add_question")
+@app.route("/add-question")
 def add_question():
-    return  render_template("add_question.html")
+    return  render_template("add-question.html")
 
 @app.route("/answer")
 def answer():

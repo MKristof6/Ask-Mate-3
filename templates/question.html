@@ -6,11 +6,11 @@
 </head>
 <body>
     <h1>
-        {{ question.title  }}  
+        {{ question.title  }}
     </h1>
-    <p>
+    <h3>
         {{ question.message }}
-    </p>
+    </h3>
     {%  for answer in answers %}
         <p> {{answer.message}} </p>
     {% endfor %}
