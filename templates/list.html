@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Main page</title>
 </head>
 <body>
-
+    <table>
+        <tr>
+        {% for item in header %}
+            <th>
+                {{ item }}
+            </th>
+        {% endfor %}
+        </tr>
+        {% for question in questions %}
+            <tr>
+            {% for i in question.values() %}
+                <td>
+                    {{ i }}
+                </td>
+            {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
