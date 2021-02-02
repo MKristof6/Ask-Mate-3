@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title> {{ question.title }} </title>
 </head>
 <body>
+    <h1>
+        {{ question.title  }}  
+    </h1>
+    <p>
+        {{ question.message }}
+    </p>
+    {%  for answer in answers %}
+        <p> {{answer.message}} </p>
+    {% endfor %}
+
+    <a href = "/question/{{question_id}}/new-answer"> Add answer </a>
 
 </body>
 </html>

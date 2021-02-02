@@ -17,7 +17,7 @@
             <tr>
             {% for i in question.values() %}
                 <td>
-                    {{ i }}
+                   <a href = "/question/{{ question.id  }}"> {{ i }} </a> 
                 </td>
             {% endfor %}
             </tr>

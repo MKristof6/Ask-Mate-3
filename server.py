@@ -11,7 +11,13 @@ def list():
 
 @app.route("/question/<question_id>")
 def question(question_id):
-    return render_template("question.html", question_id=question_id)
+    questions, header = data_manager.get_questions()
+    question = {}
+    for q in questions:
+        if q['id'] == question_id:
+            question = q
+    answers = data_manager.get_answers(question_id)
+    return render_template("question.html", question_id=question_id, question=question, answers = answers)
 
 @app.route("/question/<question_id>/new-answer")
 def new_answer(question_id):

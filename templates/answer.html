@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New Answer</title>
 </head>
 <body>
-
+    <form action = "/question/{{question_id}}", method = "post">
+        <label for="add-answer">New answer:</label>
+                    <textarea id="add-answer" name="answer" rows="4" cols="60"></textarea>
+                    <button type="submit">Save answer!</button>
+    </form>
 </body>
 </html>
