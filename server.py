@@ -71,21 +71,29 @@ def answer():
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     questions, header = data_manager.get_questions()
+    new_answers = []
     for question in questions:
         if question['id'] == question_id:
             questions.remove(question)
             data_manager.write_question(questions, header)
+    answers, header = data_manager.get_all_answers()
+    for answer in answers:
+        if answer['question_id'] != question_id:
+            new_answers.append(answer)
+        else:
+            new_answers, header = data_manager.get_all_answers()
+    data_manager.write_answers(new_answers, header)
     return redirect("/")
 
 @app.route("/answer/<answer_id>/delete", methods= ['GET', 'POST'])
-def delete_asnwer(answer_id):
+def delete_answer(answer_id):
     question_id = request.form["question_id"]
     answers, header = data_manager.get_answers(question_id)
     for answer in answers:
         if answer['id'] == answer_id:
             answers.remove(answer)
-            data_manager.write_answers(answer, header)
-    return redirect("/question/<question_id>")
+            data_manager.write_answers(answers, header)
+    return redirect(f"/question/{question_id}")
 
 
 if __name__ == "__main__":

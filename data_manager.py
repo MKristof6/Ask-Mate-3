@@ -9,6 +9,14 @@ def get_answers(question_id):
             answers.append(answer)
     return answers, header
 
+
+def get_all_answers():
+    answers = []
+    data, header = connection.read_data("./sample_data/answer.csv")
+    for answer in data:
+        answers.append(answer)
+    return answers, header
+
 def get_questions():
     questions, header = connection.read_data("./sample_data/question.csv")
     return questions, header
