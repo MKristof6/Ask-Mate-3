@@ -8,23 +8,14 @@
     <h1>
         Add New Question
     </h1>
-    <form action = "/add-question", method = "post">
-
-        {#  <label for="add_id">Id of the new question:</label><br>
-        <input type="text" id="question_id" name="id"><br>
-
-        <label for="add_submission_time">Submission time of the new question:</label><br>
-        <input type="text" id="submission_time" name="submission_time"><br>#}
+    <form action = "/add-question", method = "POST">
 
         <label for="add_title">Title of the new question:</label><br>
         <textarea id="new_question_title" name="title" rows="4" cols="30"></textarea><br>
 
         <label for="add_question">New question:</label><br>
         <textarea id="new_question" name="question" rows="4" cols="60"></textarea><br>
-    </form>
-    <form action="/" method="get">
         <input type="image" src="http://i1.wp.com/sabreuse.com/wp-content/uploads/2013/06/red-submit-button-hi.png?fit=1200%2C1200" alt="Submit" width="80">
-       {#   <button type="submit">Save question!</button>#}
     </form>
 </body>
 </html>
