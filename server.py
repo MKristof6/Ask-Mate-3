@@ -34,7 +34,7 @@ def add_question():
     if request.method == 'POST':
         questions, header = data_manager.get_questions()
         question['title'] = request.form['title']
-        question['message'] = request.form['question']
+        question['message'] = request.form['message']
         question['id'] = int(questions[-1]['id']) + 1
         question['submission_time'] = 0
         question['view_number'] = 0
@@ -50,6 +50,24 @@ def add_question():
         return redirect("/list")
     else:
         return render_template("add-question.html")
+
+
+@app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
+def edit_question(question_id):
+    questions, header = data_manager.get_questions()
+    if request.method == 'POST':
+        for question in questions:
+            if question['id'] == question_id:
+                question['title'] = request.form['title']
+                question['message'] = request.form['message']
+        data_manager.write_question(questions, header)
+        return redirect(f"/question/{question_id}")
+    else:
+        for question in questions:
+            if question['id'] == question_id:
+                title = question['title']
+                message = question['message']
+        return render_template("edit-question.html", title = title, message = message, question_id = question_id)
 
 
 @app.route("/answer", methods=['GET', 'POST'])
