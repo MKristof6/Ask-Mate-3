@@ -66,7 +66,7 @@ def edit_question(question_id):
             if question['id'] == question_id:
                 title = question['title']
                 message = question['message']
-        return render_template("edit-question.html", title = title, message = message, question_id = question_id)
+        return render_template("edit-question.html", title=title, message=message, question_id=question_id)
 
 
 @app.route("/answer", methods=['GET', 'POST'])
@@ -107,7 +107,7 @@ def delete_question(question_id):
     return redirect("/")
 
 
-@app.route("/answer/<answer_id>/delete", methods= ['GET', 'POST'])
+@app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
     question_id = request.form["question_id"]
     answers, header = data_manager.get_all_answers()
@@ -122,17 +122,34 @@ def delete_answer(answer_id):
     return redirect(f"/question/{question_id}")
 
 
-@app.route('/selector', methods = ['GET', 'POST'])
+@app.route('/selector', methods=['GET', 'POST'])
 def selector():
-   if request.method == 'POST':
-      f = request.files['file']
-      f.save(secure_filename(f.filename))
-      fullpath = f.filename
-      with open("fullpath.txt", "w") as path:
-          path.write(fullpath)
-      return "image upload successfully"
-   else:
-       return render_template("selector.html")
+    if request.method == 'POST':
+        f = request.files['file']
+        f.save(secure_filename(f.filename))
+        fullpath = f.filename
+        with open("fullpath.txt", "w") as path:
+            path.write(fullpath)
+        return "image upload successfully"
+    else:
+        return render_template("selector.html")
+
+
+# @app.route('/question/<question_id>/vote-up')
+# def vote_up_questions(question_id):
+#     questions, header = data_manager.get_questions()
+#     for question in questions:
+#         if question['id'] == question_id:
+#
+#             question['title'] = question['title']
+#             question['message'] = question['message']
+#             question['id'] = question_id
+#             question['submission_time'] = question['submission_time']
+#             question['vote_number'] = int(question['vote_number']) + 1
+#             question['image'] = question['image']
+#             questions.append(question)
+#             data_manager.write_question(questions, header)
+#             return redirect("/question/{{ question_id }}")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,8 @@
 import csv
 
+
 def read_data(filename):
-    with open (filename, "r") as file:
+    with open(filename, "r") as file:
         data = csv.reader(file, delimiter=",")
         first_line = True
         header = []
@@ -15,6 +16,7 @@ def read_data(filename):
                 first_line = False
         return posts, header
 
+
 def read_row_data(header, row):
     post = {}
     for i in range(len(header)):
@@ -22,9 +24,8 @@ def read_row_data(header, row):
     return post
 
 
-
 def write_data(filename, posts, header):
-    with open (filename, "w") as file:
+    with open(filename, "w") as file:
         data = csv.writer(file, delimiter=",")
         data.writerow(header)
         for post in posts:
