@@ -1,5 +1,6 @@
 from flask import Flask, redirect, render_template, request
 import data_manager
+import os
 
 app = Flask(__name__)
 
@@ -40,7 +41,12 @@ def add_question():
         question['vote_number'] = 0
         question['image'] = 'image placeholder'
         questions.append(question)
+        fileitem = request.form['fileToUpload']
+        if fileitem:
+             fn = os.path.basename(fileitem)
+             open(fn, 'wb').write(fileitem.file.read)
         data_manager.write_question(questions, header)
+
         return redirect("/list")
     else:
         return render_template("add-question.html")
