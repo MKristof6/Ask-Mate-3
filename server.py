@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template, request
 import data_manager
-import os
+import pathlib
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
@@ -39,12 +40,10 @@ def add_question():
         question['submission_time'] = 0
         question['view_number'] = 0
         question['vote_number'] = 0
-        question['image'] = 'image placeholder'
+        with open("fullpath.txt") as path:
+            image = path.readline()
+        question['image'] = image
         questions.append(question)
-        fileitem = request.form['fileToUpload']
-        if fileitem:
-             fn = os.path.basename(fileitem)
-             open(fn, 'wb').write(fileitem.file.read)
         data_manager.write_question(questions, header)
 
         return redirect("/list")
@@ -121,6 +120,19 @@ def delete_answer(answer_id):
                 new_answers.append(answer)
         data_manager.write_answers(new_answers, header)
     return redirect(f"/question/{question_id}")
+
+
+@app.route('/selector', methods = ['GET', 'POST'])
+def selector():
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(secure_filename(f.filename))
+      fullpath = f.filename
+      with open("fullpath.txt", "w") as path:
+          path.write(fullpath)
+      return "image upload successfully"
+   else:
+       return render_template("selector.html")
 
 
 if __name__ == "__main__":

@@ -8,17 +8,21 @@
 <table>
     <tr>
         {% for item in header %}
-            <th>
-                {{ item }}
-            </th>
+            {% if item != "image" %}
+                <th>
+                    {{ item }}
+                </th>
+            {% endif %}
         {% endfor %}
     </tr>
     {% for question in questions %}
         <tr>
-            {% for i in question.values() %}
-                <td>
-                    <a href="/question/{{ question.id }}"> {{ i }} </a>
-                </td>
+            {% for key in question.keys() %}
+                {% if key != "image" %}
+                    <td>
+                        <a href="/question/{{ question.id }}"> {{ question[key] }} </a>
+                    </td>
+                {% endif %}
             {% endfor %}
         </tr>
     {% endfor %}
