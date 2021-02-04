@@ -51,7 +51,7 @@ def answer():
     answer = {}
     if request.method == 'POST':
         question_id = request.form['question_id']
-        answers, header = data_manager.get_answers(question_id)
+        answers, header = data_manager.get_all_answers()
         answer['message'] = request.form['answer']
         try:
             answer['id'] = int(answers[-1]['id']) + 1
@@ -80,19 +80,22 @@ def delete_question(question_id):
     for answer in answers:
         if answer['question_id'] != question_id:
             new_answers.append(answer)
-        else:
-            new_answers, header = data_manager.get_all_answers()
     data_manager.write_answers(new_answers, header)
     return redirect("/")
+
 
 @app.route("/answer/<answer_id>/delete", methods= ['GET', 'POST'])
 def delete_answer(answer_id):
     question_id = request.form["question_id"]
-    answers, header = data_manager.get_answers(question_id)
+    answers, header = data_manager.get_all_answers()
+    new_answers = []
     for answer in answers:
-        if answer['id'] == answer_id:
-            answers.remove(answer)
-            data_manager.write_answers(answers, header)
+        if answer['question_id'] != question_id:
+            new_answers.append(answer)
+        else:
+            if answer['id'] != answer_id:
+                new_answers.append(answer)
+        data_manager.write_answers(new_answers, header)
     return redirect(f"/question/{question_id}")
 
 
