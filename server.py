@@ -1,9 +1,10 @@
 from flask import Flask, redirect, render_template, request
 import data_manager
-import pathlib
 from werkzeug.utils import secure_filename
+import os
 
 app = Flask(__name__)
+app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
 
 
 @app.route("/")
@@ -126,7 +127,7 @@ def delete_answer(answer_id):
 def selector():
     if request.method == 'POST':
         f = request.files['file']
-        f.save(secure_filename(f.filename))
+        f.save(os.path.join(app.config['UPLOAD_IMAGE'], secure_filename(f.filename)))
         fullpath = f.filename
         with open("fullpath.txt", "w") as path:
             path.write(fullpath)
@@ -150,6 +151,15 @@ def selector():
 #             questions.append(question)
 #             data_manager.write_question(questions, header)
 #             return redirect("/question/{{ question_id }}")
+
+
+# @app.route("/get-image/<image_name>")
+# def get_image(image_name):
+#
+#     try:
+#         return send_from_directory(app.config["CLIENT_IMAGES"], filename=image_name, as_attachment=True)
+#     except FileNotFoundError:
+#         abort(404)
 
 
 if __name__ == "__main__":
