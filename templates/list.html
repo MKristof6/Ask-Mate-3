@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+</head>
+<body>
+<table>
+    <tr>
+        {% for item in header %}
+            {% if item != "image" %}
+                <th>
+                    {{ item }}
+                </th>
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% for question in questions %}
+        <tr>
+            {% for key in question.keys() %}
+                {% if key != "image" %}
+                    <td>
+                        <a href="/question/{{ question.id }}"> {{ question[key] }} </a>
+                    </td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+<a href="/add-question"> Add question </a>
+</body>
+</html>
