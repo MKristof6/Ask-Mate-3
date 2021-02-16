@@ -80,5 +80,11 @@ def write_question(cursor: RealDictCursor, new_question):
     cursor.execute(query, new_question)
     cursor.close()
 
-
-
+@connection.connection_handler
+def delete_question(cursor: RealDictCursor, question_id):
+    query = """
+        DELETE FROM answer WHERE question_id IN (%s);
+        DELETE FROM question  WHERE id IN (%s);
+            """
+    cursor.execute(query, (question_id, question_id))
+    cursor.close()

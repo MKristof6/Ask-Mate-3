@@ -94,16 +94,7 @@ def answer():
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    new_answers = []
-    for question in questions:
-        if question['id'] == question_id:
-            questions.remove(question)
-            data_manager.write_question(questions, header)
-    answers, header = data_manager.get_all_answers()
-    for answer in answers:
-        if answer['question_id'] != question_id:
-            new_answers.append(answer)
-    data_manager.write_answers(new_answers, header)
+    data_manager.delete_question(question_id)
     return redirect("/")
 
 
