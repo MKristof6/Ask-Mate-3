@@ -16,13 +16,9 @@ def list():
 
 @app.route("/question/<question_id>")
 def question(question_id):
-    questions = data_manager.get_questions()
-    question = {}
-    for q in questions:
-        if q['id'] == question_id:
-            question = q
-    answers, header = data_manager.get_answers(question_id)
-    return render_template("question.html", question_id=question_id, question=question, answers=answers)
+    question = data_manager.get_question(question_id)
+    answers= data_manager.get_answers(question_id)
+    return render_template("question.html", question=question, question_id = question_id, answers=answers)
 
 
 @app.route("/question/<question_id>/new-answer")
@@ -32,21 +28,21 @@ def new_answer(question_id):
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
+    last_question = data_manager.get_last_question()
+    for q in last_question:
+        last_id = q['max']
     question = {}
     if request.method == 'POST':
-        questions, header = data_manager.get_questions()
         question['title'] = request.form['title']
         question['message'] = request.form['message']
-        question['id'] = int(questions[-1]['id']) + 1
+        question['id'] = int(last_id) + 1
         question['submission_time'] = 0
         question['view_number'] = 0
         question['vote_number'] = 0
         with open("fullpath.txt") as path:
             image = path.readline()
         question['image'] = image
-        questions.append(question)
-        data_manager.write_question(questions, header)
-
+        data_manager.write_question(question)
         return redirect("/list")
     else:
         return render_template("add-question.html")
@@ -68,6 +64,10 @@ def edit_question(question_id):
                 title = question['title']
                 message = question['message']
         return render_template("edit-question.html", title=title, message=message, question_id=question_id)
+
+
+# @app.route("/answer/<answer-id>/edit", methods=['GET', 'POST'])
+# def edit_answer(answer_id):
 
 
 @app.route("/answer", methods=['GET', 'POST'])
@@ -131,7 +131,7 @@ def selector():
         fullpath = f.filename
         with open("fullpath.txt", "w") as path:
             path.write(fullpath)
-        return "image upload successfully"
+        return "image successfully uploaded"
     else:
         return render_template("selector.html")
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit answer</title>
+</head>
+<body>
+
+<h1>
+    Edit answer
+</h1>
+
+<form action="/answer/{{ answer_id }}/edit" method="POST">
+    <label for="edit-message">Edit the answer:</label><br>
+    <textarea id="edit-message" name="message" rows="4" cols="30" autofocus required>
+        {% if message is not none %}{{ message }}{% endif %}
+    </textarea><br>
+
+</body>
+</html>

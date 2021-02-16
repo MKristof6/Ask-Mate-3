@@ -2,21 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title> {{ question.title }} </title>
+    <title> {% for q in question %}
+        {{ q.title }}
+    {% endfor %}
+    </title>
 </head>
 <body>
 <h1>
-    {{ question.title }}
+    {% for q in question %}
+        {{ q.title }}
+    {% endfor %}
+
 </h1>
 <h3>
-    {{ question.message }}
+    {% for q in question %}
+        {{ q.message }}
+    {% endfor %}
 </h3>
 {#<a href="/question/{{ question_id }}/vote-up">Vote up</a>#}
 {#<a href="/question/{{ question_id }}/vote-down">Vote down</a><br>#}
-
-<br><img src="/{{ question.image }}"><br>
-<a href="/question/{{ question_id }}/delete" onclick="return confirm('Are you sure you want to delete the question?')">Delete
+    {% for q in question %}
+        <br><img src="/{{ q.image }}"><br>
+        <a href="/question/{{ q.id }}/delete" onclick="return confirm('Are you sure you want to delete the question?')">Delete
     question</a>
+    {% endfor %}
+
 {% for answer in answers %}
     <p> {{ answer.message }} </p>
     <form action="/answer/{{ answer.id }}/delete" method="post">
