@@ -6,16 +6,18 @@
 </head>
 <body>
 <table>
-    <tr>
-        {% for item in header %}
-            {% if item != "image" %}
-                <th>
-                    {{ item }}
-                </th>
-            {% endif %}
-        {% endfor %}
-    </tr>
+    {% set first = namespace(value=0) %}
     {% for question in questions %}
+        {% if first.value == 0 %}
+            {% set first.value = first.value + 1 %}
+            {% for item in question.keys() %}
+                {% if item != "image" %}
+                    <th>
+                        {{ item }}
+                    </th>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         <tr>
             {% for key in question.keys() %}
                 {% if key != "image" %}

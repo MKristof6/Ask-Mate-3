@@ -10,13 +10,13 @@ app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
 @app.route("/")
 @app.route("/list")
 def list():
-    questions, header = data_manager.get_questions()
-    return render_template("list.html", questions=questions, header=header)
+    questions = data_manager.get_questions()
+    return render_template("list.html", questions=questions)
 
 
 @app.route("/question/<question_id>")
 def question(question_id):
-    questions, header = data_manager.get_questions()
+    questions = data_manager.get_questions()
     question = {}
     for q in questions:
         if q['id'] == question_id:
@@ -166,4 +166,3 @@ if __name__ == "__main__":
     app.run(
         debug=True
     )
->>>>>>> older
