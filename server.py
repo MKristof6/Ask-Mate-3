@@ -50,19 +50,18 @@ def add_question():
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
 def edit_question(question_id):
-    questions = data_manager.get_questions()
+    questions = data_manager.get_question(question_id)
+    for q in questions:
+        title = q['title']
+        message = q['message']
     if request.method == 'POST':
+        data_manager.delete_question(question_id)
         for question in questions:
-            if question['id'] == question_id:
-                question['title'] = request.form['title']
-                question['message'] = request.form['message']
+            question['title'] = request.form['title']
+            question['message'] = request.form['message']
         data_manager.write_question(question)
         return redirect(f"/question/{question_id}")
     else:
-        for question in questions:
-            if question['id'] == question_id:
-                title = question['title']
-                message = question['message']
         return render_template("edit-question.html", title=title, message=message, question_id=question_id)
 
 
