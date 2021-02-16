@@ -16,6 +16,16 @@ def get_answers(cursor: RealDictCursor, question_id) -> list:
     return cursor.fetchall()
 
 @connection.connection_handler
+def get_answer_by_id(cursor: RealDictCursor, answer_id) -> list:
+    query = """
+            SELECT *
+            FROM answer
+            WHERE id IN (%s)
+            """
+    cursor.execute(query, (answer_id,))
+    return cursor.fetchall()
+
+@connection.connection_handler
 def get_all_answers(cursor: RealDictCursor) -> list:
     query = """
             SELECT *
@@ -87,4 +97,12 @@ def delete_question(cursor: RealDictCursor, question_id):
         DELETE FROM question  WHERE id IN (%s);
             """
     cursor.execute(query, (question_id, question_id))
+    cursor.close()
+
+@connection.connection_handler
+def delete_answer(cursor: RealDictCursor, answer_id):
+    query = """
+        DELETE FROM answer WHERE id IN (%s);
+            """
+    cursor.execute(query, (answer_id,))
     cursor.close()

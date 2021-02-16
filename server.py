@@ -100,16 +100,10 @@ def delete_question(question_id):
 
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
-    question_id = request.form["question_id"]
-    answers, header = data_manager.get_all_answers()
-    new_answers = []
-    for answer in answers:
-        if answer['question_id'] != question_id:
-            new_answers.append(answer)
-        else:
-            if answer['id'] != answer_id:
-                new_answers.append(answer)
-        data_manager.write_answers(new_answers, header)
+    answer = data_manager.get_answer_by_id(answer_id)
+    for a in answer:
+        question_id = a['question_id']
+    data_manager.delete_answer(answer_id)
     return redirect(f"/question/{question_id}")
 
 
