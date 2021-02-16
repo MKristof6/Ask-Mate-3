@@ -17,8 +17,8 @@ def list():
 @app.route("/question/<question_id>")
 def question(question_id):
     question = data_manager.get_question(question_id)
-    answers= data_manager.get_answers(question_id)
-    return render_template("question.html", question=question, question_id = question_id, answers=answers)
+    answers = data_manager.get_answers_by_question_id(question_id)
+    return render_template("question.html", question=question, question_id=question_id, answers=answers)
 
 
 @app.route("/question/<question_id>/new-answer")
@@ -51,9 +51,9 @@ def add_question():
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
 def edit_question(question_id):
     questions = data_manager.get_question(question_id)
-    for q in questions:
-        title = q['title']
-        message = q['message']
+    for question in questions:
+        title = question['title']
+        message = question['message']
     if request.method == 'POST':
         data_manager.delete_question(question_id)
         for question in questions:
@@ -65,8 +65,20 @@ def edit_question(question_id):
         return render_template("edit-question.html", title=title, message=message, question_id=question_id)
 
 
-# @app.route("/answer/<answer-id>/edit", methods=['GET', 'POST'])
-# def edit_answer(answer_id):
+@app.route("/answer/<answer_id>/edit", methods=['GET', 'POST'])
+def edit_answer(answer_id):
+    answers = data_manager.get_answer_by_id(answer_id)
+    for answer in answers:
+        message = answer['message']
+        question_id = answer['question_id']
+    if request.method == 'POST':
+        data_manager.delete_answer(answer_id)
+        for answer in answers:
+            answer['message'] = request.form['message']
+        data_manager.write_answers(answer)
+        return redirect(f"/question/{question_id}")
+    else:
+        return render_template("edit-answer.html", answer_id = answer_id, message=message)
 
 @app.route("/answer", methods=['GET', 'POST'])
 def answer():

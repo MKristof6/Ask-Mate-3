@@ -5,7 +5,7 @@ from psycopg2.extensions import AsIs
 import connection
 
 @connection.connection_handler
-def get_answers(cursor: RealDictCursor, question_id) -> list:
+def get_answers_by_question_id(cursor: RealDictCursor, question_id) -> list:
     query = """
             SELECT *
             FROM answer
