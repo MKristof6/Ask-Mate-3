@@ -50,13 +50,13 @@ def add_question():
 
 @app.route("/question/<question_id>/edit", methods=['GET', 'POST'])
 def edit_question(question_id):
-    questions, header = data_manager.get_questions()
+    questions = data_manager.get_questions()
     if request.method == 'POST':
         for question in questions:
             if question['id'] == question_id:
                 question['title'] = request.form['title']
                 question['message'] = request.form['message']
-        data_manager.write_question(questions, header)
+        data_manager.write_question(question)
         return redirect(f"/question/{question_id}")
     else:
         for question in questions:
@@ -69,24 +69,24 @@ def edit_question(question_id):
 # @app.route("/answer/<answer-id>/edit", methods=['GET', 'POST'])
 # def edit_answer(answer_id):
 
-
 @app.route("/answer", methods=['GET', 'POST'])
 def answer():
     answer = {}
     if request.method == 'POST':
         question_id = request.form['question_id']
-        answers, header = data_manager.get_all_answers()
+        last_answer = data_manager.get_last_answer(question_id)
+        for a in last_answer:
+            last_id = a['max']
         answer['message'] = request.form['answer']
-        try:
-            answer['id'] = int(answers[-1]['id']) + 1
-        except IndexError:
+        if last_id:
+            answer['id'] = int(last_id) + 1
+        else:
             answer['id'] = 1
         answer['submission_time'] = 0
         answer['vote_number'] = 0
         answer['image'] = 'image placeholder'
         answer['question_id'] = question_id
-        answers.append(answer)
-        data_manager.write_answers(answers, header)
+        data_manager.write_answers(answer)
         return redirect(f"/question/{question_id}")
     else:
         return render_template("answer.html")
@@ -94,7 +94,6 @@ def answer():
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    questions, header = data_manager.get_questions()
     new_answers = []
     for question in questions:
         if question['id'] == question_id:
