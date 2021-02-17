@@ -3,30 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit question</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
 </head>
 <body>
 <h1>
     Edit Question
 </h1>
-<form action="/question/{{question_id}}/edit"  method="POST">
+<form action="/question/{{ question_id }}/edit" method="POST">
     <label for="add_title">Title of the question:</label><br>
     <textarea id="new_question_title" name="title" rows="4" cols="30" autofocus required>
-        {%  if title is not none %}{{ title }}{% endif %}
+        {% if title is not none %}{{ title }}{% endif %}
     </textarea><br>
     <label for="edit_question">New question:</label><br>
     <textarea id="edit_question" name="message" rows="4" cols="60" required>
-        {%  if message is not none %}{{ message }}{% endif %}
+        {% if message is not none %}{{ message }}{% endif %}
     </textarea><br>
-     <p>Select image to upload:</p>
-    <input type="file" name="fileToUpload" >
+    <p>Select image to upload:</p>
+    <input type="file" name="fileToUpload">
     {# <input type="submit" value="Upload Image" name="submit" ><br> #}
-
-     <input type="image"
+    <br>
+    <input type="image"
            src="http://i1.wp.com/sabreuse.com/wp-content/uploads/2013/06/red-submit-button-hi.png?fit=1200%2C1200"
            alt="Submit" width="80">
 
 </form>
-
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}"> Go back to Question </a>
+</div>
 </body>
 </html>

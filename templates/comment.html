@@ -3,13 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>New comment</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
 </head>
 <body>
 <form action="/comment" , method="post">
     <label for="add-question-comment">New comment:</label>
+    <br>
     <textarea id="add-question-comment" name="add-question-comment" rows="4" cols="60" autofocus required></textarea>
     <input name="question_id" id="question_id" value="{{ question_id }}" type="hidden">
+    <br>
     <button type="submit">Save comment!</button>
 </form>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}"> Go back to Question </a>
+</div>
 </body>
 </html>
