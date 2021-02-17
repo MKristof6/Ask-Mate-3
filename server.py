@@ -30,8 +30,12 @@ def new_answer(question_id):
     return render_template("answer.html", question_id=question_id)
 
 @app.route("/question/<question_id>/new-comment")
-def new_comment(question_id):
-    return render_template("comment.html", question_id=question_id)
+def new_question_comment(question_id):
+    return render_template("comment.html", question_id=question_id, answer_id=None)
+
+@app.route("/answer/<answer_id>/new-comment")
+def new_answer_comment(answer_id):
+    return render_template("comment.html", question_id=None, answer_id=answer_id)
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
@@ -103,7 +107,12 @@ def edit_comment(comment_id):
     comments = data_manager.get_comment_by_id(comment_id)
     for comment in comments:
         message = comment['message']
-        question_id = comment['question_id']
+        if comment['question_id']:
+            question_id = comment['question_id']
+        else:
+            answers = data_manager.get_answer_by_id(comment['answer_id'])
+            for a in answers:
+                question_id = a['question_id']
     if request.method == 'POST':
         data_manager.delete_comment(comment_id)
         for comment in comments:
@@ -112,6 +121,7 @@ def edit_comment(comment_id):
         return redirect(f"/question/{question_id}")
     else:
         return render_template("edit-comment.html", comment_id = comment_id, message=message, question_id=question_id)
+
 
 @app.route("/answer", methods=['GET', 'POST'])
 def answer():
@@ -145,6 +155,7 @@ def comment():
     comment = {}
     if request.method == 'POST':
         question_id = request.form['question_id']
+        answer_id = request.form['answer_id']
         last_comment = data_manager.get_last_comment()
         for c in last_comment:
             last_id = c['max']
@@ -154,9 +165,13 @@ def comment():
         else:
             comment['id'] = 1
         comment['submission_time'] = 0
-        comment['answer_id'] = None
         comment['edited_count'] = 0
-        comment['question_id'] = question_id
+        if question_id:
+            comment['question_id'] = question_id
+            comment['answer_id'] = None
+        else:
+            comment['question_id'] = None
+            comment['answer_id'] = answer_id
         data_manager.write_comments(comment)
         return redirect(f"/question/{question_id}")
     else:
