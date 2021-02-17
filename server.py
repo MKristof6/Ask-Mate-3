@@ -87,7 +87,7 @@ def edit_answer(answer_id):
         data_manager.write_answers(answer)
         return redirect(f"/question/{question_id}")
     else:
-        return render_template("edit-answer.html", answer_id = answer_id, message=message)
+        return render_template("edit-answer.html", answer_id = answer_id, message=message, question_id=question_id)
 
 
 @app.route("/comment/<comment_id>/edit", methods=['GET', 'POST'])
@@ -103,7 +103,7 @@ def edit_comment(comment_id):
         data_manager.write_comments(comment)
         return redirect(f"/question/{question_id}")
     else:
-        return render_template("edit-comment.html", comment_id = comment_id, message=message)
+        return render_template("edit-comment.html", comment_id = comment_id, message=message, question_id=question_id)
 
 @app.route("/answer", methods=['GET', 'POST'])
 def answer():
