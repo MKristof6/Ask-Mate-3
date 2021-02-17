@@ -6,6 +6,7 @@
         {{ q.title }}
     {% endfor %}
     </title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 <body>
 <h1>
@@ -21,17 +22,18 @@
 </h3>
 {#<a href="/question/{{ question_id }}/vote-up">Vote up</a>#}
 {#<a href="/question/{{ question_id }}/vote-down">Vote down</a><br>#}
-    {% for q in question %}
-        {%  if q.image is not none %}
+{% for q in question %}
+    {% if q.image is not none %}
         <br><img src="../static/uploaded_images/{{ q.image }}" height="400"><br>
-        {% endif %}
-        <a href="/question/{{ q.id }}/delete" onclick="return confirm('Are you sure you want to delete the question?')">Delete
-    question</a>
-    {% endfor %}
+    {% endif %}
+    <a style="text-decoration: none; color: white" href="/question/{{ q.id }}/delete" onclick="return confirm('Are you sure you want to delete the question?')">Delete
+        question</a>
+{% endfor %}
 
 {% for answer in answers %}
+    <hr>
     <p> {{ answer.message }} </p>
-    <a href="/answer/{{ answer.id }}/edit"> Edit answer </a> <br>
+    <a style="text-decoration: none; color: white" href="/answer/{{ answer.id }}/edit"> Edit answer </a> <br>
     <form action="/answer/{{ answer.id }}/delete" method="post">
         <input type="hidden" id="question_id" name="question_id" value="{{ question_id }}">
         <button type="submit"
@@ -42,9 +44,11 @@
 
 {% endfor %}
 
-<a href="/question/{{ question_id }}/edit"> Edit question </a> <br>
-<a href="/question/{{ question_id }}/new-answer"> Add answer </a> <br>
-<a href="/"> Go back to list </a>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/"> Go back to list </a>
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/edit"> Edit question </a> <br>
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-answer"> Add answer </a> <br>
+</div>
 
 </body>
 </html>
