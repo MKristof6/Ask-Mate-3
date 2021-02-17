@@ -22,7 +22,9 @@
 {#<a href="/question/{{ question_id }}/vote-up">Vote up</a>#}
 {#<a href="/question/{{ question_id }}/vote-down">Vote down</a><br>#}
     {% for q in question %}
-        <br><img src="/{{ q.image }}"><br>
+        {%  if q.image is not none %}
+        <br><img src="../static/uploaded_images/{{ q.image }}" height="400"><br>
+        {% endif %}
         <a href="/question/{{ q.id }}/delete" onclick="return confirm('Are you sure you want to delete the question?')">Delete
     question</a>
     {% endfor %}
