@@ -190,11 +190,17 @@ def delete_answer(answer_id):
     data_manager.delete_answer(answer_id)
     return redirect(f"/question/{question_id}")
 
+
 @app.route("/comment/<comment_id>/delete", methods=['GET', 'POST'])
 def delete_comment(comment_id):
     comment = data_manager.get_comment_by_id(comment_id)
     for c in comment:
-        question_id = c['question_id']
+        if c['question_id']:
+            question_id = c['question_id']
+        else:
+            answers = data_manager.get_answer_by_id(c['answer_id'])
+            for a in answers:
+                question_id = a['question_id']
     data_manager.delete_comment(comment_id)
     return redirect(f"/question/{question_id}")
 
