@@ -142,7 +142,7 @@ def comment():
         else:
             comment['id'] = 1
         comment['submission_time'] = 0
-        comment['answer_id'] = '<null>'
+        comment['answer_id'] = 'NULL'
         comment['edited_count'] = 0
         comment['question_id'] = question_id
         data_manager.write_comments(comment)
