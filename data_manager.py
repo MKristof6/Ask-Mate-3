@@ -123,8 +123,8 @@ def write_answers(cursor: RealDictCursor, new_answer):
 def write_comments(cursor: RealDictCursor, new_comment):
     query = """
                     INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count) 
-                    VALUES (%(id)s, %(question_id)s, %(answer_id)s, date_trunc('seconds', localtimestamp), 
-                    %(message)s,
+                    VALUES (%(id)s, %(question_id)s, %(answer_id)s, 
+                    %(message)s, date_trunc('seconds', localtimestamp), 
                     %(edited_count)s);
                     """
     cursor.execute(query, new_comment)

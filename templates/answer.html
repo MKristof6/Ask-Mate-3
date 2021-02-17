@@ -6,10 +6,17 @@
     <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
 </head>
 <body>
-<form action="/answer" , method="post">
+<form action="/answer", method="post">
     <label for="add-answer">New answer:</label><br>
     <textarea id="add-answer" name="answer" rows="4" cols="60" autofocus required></textarea>
     <input name="question_id" id="question_id" value="{{ question_id }}" type="hidden"><br>
+    <p>Select image to upload:</p>
+    <script>
+        function openwnd() {
+            window.open("../../selector");
+        }
+    </script>
+    <input type="button" value="Choose Image" onclick="openwnd()"><br>
     <button type="submit">Save answer!</button>
 </form>
 <div id="menu">
