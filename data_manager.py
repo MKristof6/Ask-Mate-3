@@ -106,3 +106,13 @@ def delete_answer(cursor: RealDictCursor, answer_id):
             """
     cursor.execute(query, (answer_id,))
     cursor.close()
+
+
+@connection.connection_handler
+def search_by_word(cursor: RealDictCursor, search)-> list:
+    query = """
+               SELECT *
+               FROM question
+               WHERE (%s) IN title """
+    cursor.execute(query, (search,))
+    return cursor.fetchall()

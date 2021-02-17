@@ -10,7 +10,13 @@ app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
 @app.route("/")
 @app.route("/list")
 def list():
-    questions = data_manager.get_questions()
+    search = request.form['searched']
+
+    if search:
+        questions = data_manager.search_by_word(search)
+    else:
+        questions = data_manager.get_questions()
+
     return render_template("list.html", questions=questions)
 
 
