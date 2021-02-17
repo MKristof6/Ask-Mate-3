@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New comment</title>
+</head>
+<body>
+<form action="/comment" , method="post">
+    <label for="add-question-comment">New comment:</label>
+    <textarea id="add-question-comment" name="add-question-comment" rows="4" cols="60" autofocus required></textarea>
+    <input name="question_id" id="question_id" value="{{ question_id }}" type="hidden">
+    <button type="submit">Save comment!</button>
+</form>
+</body>
+</html>

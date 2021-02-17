@@ -10,13 +10,11 @@ app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
 @app.route("/")
 @app.route("/list")
 def list():
-    search = request.form['searched']
-
+    search = request.args.get('searched')
     if search:
         questions = data_manager.search_by_word(search)
     else:
         questions = data_manager.get_questions()
-
     return render_template("list.html", questions=questions)
 
 
@@ -24,13 +22,16 @@ def list():
 def question(question_id):
     question = data_manager.get_question(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
-    return render_template("question.html", question=question, question_id=question_id, answers=answers)
-
+    comments = data_manager.get_comments_by_question_id(question_id)
+    return render_template("question.html", question=question, question_id=question_id, answers=answers, comments=comments)
 
 @app.route("/question/<question_id>/new-answer")
 def new_answer(question_id):
     return render_template("answer.html", question_id=question_id)
 
+@app.route("/question/<question_id>/new-comment")
+def new_comment(question_id):
+    return render_template("comment.html", question_id=question_id)
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
@@ -86,12 +87,28 @@ def edit_answer(answer_id):
     else:
         return render_template("edit-answer.html", answer_id = answer_id, message=message)
 
+
+@app.route("/comment/<comment_id>/edit", methods=['GET', 'POST'])
+def edit_comment(comment_id):
+    comments = data_manager.get_comment_by_id(comment_id)
+    for comment in comments:
+        message = comment['message']
+        question_id = comment['question_id']
+    if request.method == 'POST':
+        data_manager.delete_comment(comment_id)
+        for comment in comments:
+            comment['message'] = request.form['message']
+        data_manager.write_comments(comment)
+        return redirect(f"/question/{question_id}")
+    else:
+        return render_template("edit-comment.html", comment_id = comment_id, message=message)
+
 @app.route("/answer", methods=['GET', 'POST'])
 def answer():
     answer = {}
     if request.method == 'POST':
         question_id = request.form['question_id']
-        last_answer = data_manager.get_last_answer(question_id)
+        last_answer = data_manager.get_last_answer()
         for a in last_answer:
             last_id = a['max']
         answer['message'] = request.form['answer']
@@ -109,11 +126,32 @@ def answer():
         return render_template("answer.html")
 
 
+@app.route("/comment", methods=['GET', 'POST'])
+def comment():
+    comment = {}
+    if request.method == 'POST':
+        question_id = request.form['question_id']
+        last_comment = data_manager.get_last_comment()
+        for c in last_comment:
+            last_id = c['max']
+        comment['message'] = request.form['comment']
+        if last_id:
+            comment['id'] = int(last_id) + 1
+        else:
+            comment['id'] = 1
+        comment['submission_time'] = 0
+        comment['answer_id'] = '<null>'
+        comment['edited_count'] = 0
+        comment['question_id'] = question_id
+        data_manager.write_comments(comment)
+        return redirect(f"/question/{question_id}")
+    else:
+        return render_template("comment.html")
+
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     data_manager.delete_question(question_id)
     return redirect("/")
-
 
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
@@ -121,6 +159,14 @@ def delete_answer(answer_id):
     for a in answer:
         question_id = a['question_id']
     data_manager.delete_answer(answer_id)
+    return redirect(f"/question/{question_id}")
+
+@app.route("/comment/<comment_id>/delete", methods=['GET', 'POST'])
+def delete_comment(comment_id):
+    comment = data_manager.get_comment_by_id(comment_id)
+    for c in comment:
+        question_id = c['question_id']
+    data_manager.delete_comment(comment_id)
     return redirect(f"/question/{question_id}")
 
 
