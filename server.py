@@ -68,6 +68,10 @@ def edit_question(question_id):
         for question in questions:
             question['title'] = request.form['title']
             question['message'] = request.form['message']
+            with open("fullpath.txt") as path:
+                image = path.readline()
+                if image != "<null>":
+                    question['image'] = image
         data_manager.write_question(question)
         return redirect(f"/question/{question_id}")
     else:
@@ -84,6 +88,10 @@ def edit_answer(answer_id):
         data_manager.delete_answer(answer_id)
         for answer in answers:
             answer['message'] = request.form['message']
+            with open("fullpath.txt") as path:
+                image = path.readline()
+                if image != "<null>":
+                    answer['image'] = image
         data_manager.write_answers(answer)
         return redirect(f"/question/{question_id}")
     else:
@@ -120,9 +128,13 @@ def answer():
             answer['id'] = 1
         answer['submission_time'] = 0
         answer['vote_number'] = 0
-        answer['image'] = 'image placeholder'
+        with open("fullpath.txt") as path:
+            image = path.readline()
+        answer['image'] = image
         answer['question_id'] = question_id
         data_manager.write_answers(answer)
+        with open("fullpath.txt", "w") as path:
+            path.write("<null>")
         return redirect(f"/question/{question_id}")
     else:
         return render_template("answer.html")
