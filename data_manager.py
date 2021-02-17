@@ -167,10 +167,10 @@ def delete_comment(cursor: RealDictCursor, comment_id):
     cursor.close()
 
 @connection.connection_handler
-def search_by_word(cursor: RealDictCursor, search)-> list:
+def search_by_word(cursor: RealDictCursor, search: str)-> list:
     query = """
                SELECT *
                FROM question
-               WHERE title LIKE %(search)s; """
-    cursor.execute(query, (search,))
+               WHERE title LIKE %(key)s OR message LIKE %(key)s; """
+    cursor.execute(query, {"key":  '%' + search + '%'})
     return cursor.fetchall()
