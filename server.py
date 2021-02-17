@@ -9,7 +9,7 @@ app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
 
 @app.route("/")
 @app.route("/list")
-def list():
+def main():
     search = request.args.get('searched')
     if search:
         questions = data_manager.search_by_word(search)
@@ -50,6 +50,8 @@ def add_question():
             image = path.readline()
         question['image'] = image
         data_manager.write_question(question)
+        with open("fullpath.txt", "w") as path:
+            path.write("<null>")
         return redirect("/list")
     else:
         return render_template("add-question.html")

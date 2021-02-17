@@ -14,20 +14,33 @@
             {% set first.value = first.value + 1 %}
             {% for item in question.keys() %}
                 {% if item != "image" %}
-                    <th id="data">
+                    <th style="color: white">
                         {{ item }}
                     </th>
                 {% endif %}
             {% endfor %}
         {% endif %}
         <tr>
+{#            {% for key in question.keys() %}#}
+{#                {% if key != "image" %}#}
+{#                    <td>#}
+{#                        <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>#}
+{#                    </td>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+        <tr>
             {% for key in question.keys() %}
                 {% if key != "image" %}
-                    <td>
-                        <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>
+                    <td style="color: white">
+                        {% if question[key] == question.title %}
+                            <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>
+                        {% else %}
+                            {{ question[key] }}
+                        {% endif %}
                     </td>
                 {% endif %}
             {% endfor %}
+        </tr>
         </tr>
     {% endfor %}
 </table>

@@ -26,8 +26,9 @@ th, td {
 }
 
 #data {
-    text-decoration: none;
+    /*text-decoration: none;*/
     color: white;
+    font-weight: 600;
 
 }
 
