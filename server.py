@@ -14,7 +14,7 @@ def main():
     if search:
         questions = data_manager.search_by_word(search)
     else:
-        questions = data_manager.get_questions()
+        questions = data_manager.get_last_few_questions()
     return render_template("list.html", questions=questions)
 
 

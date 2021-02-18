@@ -74,6 +74,17 @@ def get_question(cursor: RealDictCursor, question_id)-> list:
     return cursor.fetchall()
 
 @connection.connection_handler
+def get_last_few_questions(cursor: RealDictCursor)-> list:
+    query = """
+                   SELECT *
+                   FROM question
+                   ORDER BY id ASC
+                   LIMIT 5;
+                   """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@connection.connection_handler
 def get_last_question(cursor: RealDictCursor)-> list:
     query = """
                SELECT MAX(id)
