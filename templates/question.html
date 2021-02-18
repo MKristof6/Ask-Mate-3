@@ -10,6 +10,7 @@
 </head>
 <body>
 <h1>
+
     {% for q in question %}
         {{ q.title }}
     {% endfor %}
@@ -30,6 +31,12 @@
        onclick="return confirm('Are you sure you want to delete the question?')">Delete
         question</a>
 {% endfor %}
+<h4 style="color: white">Tags:
+    {% for tag in tags %}
+        {% for t in tag %}
+            {{ t.name }}
+        {% endfor %}
+    {% endfor %}</h4>
 <hr>
 <br>
 <h3>Comments:</h3>
@@ -82,7 +89,7 @@
         </form>
 
     {% endfor %}
-     <a style="text-decoration: none; color: white" href="/question/{{ answer.id }}/new-comment"> Add comment </a> <br>
+    <a style="text-decoration: none; color: white" href="/question/{{ answer.id }}/new-comment"> Add comment </a> <br>
 {% endfor %}
 
 
@@ -92,6 +99,7 @@
     <br>
     <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-answer"> Add answer </a> <br>
     <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-comment"> Add comment </a> <br>
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-tag"> Add tag </a> <br>
 </div>
 
 

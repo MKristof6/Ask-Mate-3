@@ -23,19 +23,28 @@ def question(question_id):
     question = data_manager.get_question(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
     comments = data_manager.get_comments_by_question_id(question_id)
-    return render_template("question.html", question=question, question_id=question_id, answers=answers, comments=comments)
+    tag_ids = data_manager.get_tag_by_question_id(question_id)
+    tags = []
+    for id in tag_ids:
+        tags.append(data_manager.get_tag_by_id(id['tag_id']))
+    return render_template("question.html", question=question, question_id=question_id, answers=answers,
+                           comments=comments, tags=tags)
+
 
 @app.route("/question/<question_id>/new-answer")
 def new_answer(question_id):
     return render_template("answer.html", question_id=question_id)
 
+
 @app.route("/question/<question_id>/new-comment")
 def new_question_comment(question_id):
     return render_template("comment.html", question_id=question_id, answer_id=None)
 
+
 @app.route("/answer/<answer_id>/new-comment")
 def new_answer_comment(answer_id):
     return render_template("comment.html", question_id=None, answer_id=answer_id)
+
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
@@ -99,7 +108,7 @@ def edit_answer(answer_id):
         data_manager.write_answers(answer)
         return redirect(f"/question/{question_id}")
     else:
-        return render_template("edit-answer.html", answer_id = answer_id, message=message, question_id=question_id)
+        return render_template("edit-answer.html", answer_id=answer_id, message=message, question_id=question_id)
 
 
 @app.route("/comment/<comment_id>/edit", methods=['GET', 'POST'])
@@ -120,7 +129,7 @@ def edit_comment(comment_id):
         data_manager.write_comments(comment)
         return redirect(f"/question/{question_id}")
     else:
-        return render_template("edit-comment.html", comment_id = comment_id, message=message, question_id=question_id)
+        return render_template("edit-comment.html", comment_id=comment_id, message=message, question_id=question_id)
 
 
 @app.route("/answer", methods=['GET', 'POST'])
@@ -177,10 +186,12 @@ def comment():
     else:
         return render_template("comment.html")
 
+
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
     data_manager.delete_question(question_id)
     return redirect("/")
+
 
 @app.route("/answer/<answer_id>/delete", methods=['GET', 'POST'])
 def delete_answer(answer_id):
@@ -216,6 +227,23 @@ def selector():
         return "image successfully uploaded"
     else:
         return render_template("selector.html")
+
+
+@app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
+def new_tag(question_id):
+    if request.method == 'POST':
+        tags = {}
+        tag = request.form['new-tag']
+        last_tag = data_manager.get_last_tag()
+        for t in last_tag:
+            last_id = t['max']
+        tags['id'] = int(last_id) + 1
+        tags['name'] = tag
+        data_manager.add_new_tag(tags)
+        data_manager.add_question_id_to_tag(question_id, tags['id'])
+        return redirect(f'/question/{question_id}')
+    else:
+        return render_template("add-tag.html", question_id=question_id, )
 
 
 # @app.route('/question/<question_id>/vote-up')
