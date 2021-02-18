@@ -221,6 +221,22 @@ def selector():
         return render_template("selector.html")
 
 
+@app.route('/question/<question_id>/vote-up')
+def vote_up_question(question_id):
+    questions = data_manager.get_question(question_id)
+    for question in questions:
+        vote = int(question['vote_number'])
+        for q in question:
+            if question[q] == question['vote_number']:
+                vote = vote + 1
+    return redirect('/', vote=vote)
+
+
+# @app.route('/question/<question_id>/vote-down')
+# def vote_down_question(question_id):
+
+
+
 # @app.route('/question/<question_id>/vote-up')
 # def vote_up_questions(question_id):
 #     questions, header = data_manager.get_questions()
