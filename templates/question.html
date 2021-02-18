@@ -31,13 +31,13 @@
     <a style="text-decoration: none; color: white" href="/question/{{ q.id }}/delete"
        onclick="return confirm('Are you sure you want to delete the question?')">Delete
         question</a>
-{% endfor %}
+
 <hr>
 <br>
 
 <h3>Comments:</h3>
 {% for comment in comments %}
-    {% if comment.question_id is not none %}
+    {% if comment.question_id==q.id %}
         <p> {{ comment.message }} </p>
 
     <a style="color: white; text-decoration: none" href=/comment/{{ comment.id }}/edit> Edit comment </a> <br>
@@ -50,6 +50,7 @@
         <hr>
     </form>
     {% endif %}
+{% endfor %}
 {% endfor %}
 <br>
 <h3>Answers:</h3>
@@ -73,7 +74,7 @@
     {% for comment in comments %}
         {% if comment.answer_id==answer.id %}
             <p> {{ comment.message }} </p>
-        {% endif %}
+
         <a style="color: white; text-decoration: none" href=/comment/{{ comment.id }}/edit> Edit comment </a> <br>
         <form action="/comment/{{ comment.id }}/delete" method="post">
             <input type="hidden" id="question_id" name="question_id" value="{{ question_id }}">
@@ -83,9 +84,9 @@
             </button>
             <hr>
         </form>
-
+    {% endif %}
     {% endfor %}
-     <a style="text-decoration: none; color: white" href="/question/{{ answer.id }}/new-comment"> Add comment </a> <br>
+     <a style="text-decoration: none; color: white" href="/answer/{{ answer.id }}/new-comment"> Add comment </a> <br>
 {% endfor %}
 
 

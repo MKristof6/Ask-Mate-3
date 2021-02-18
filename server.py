@@ -22,7 +22,7 @@ def main():
 def question(question_id):
     question = data_manager.get_question(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
-    comments = data_manager.get_comments_by_question_id(question_id)
+    comments = data_manager.get_all_comments()
     return render_template("question.html", question=question, question_id=question_id, answers=answers, comments=comments)
 
 @app.route("/question/<question_id>/new-answer")
@@ -166,12 +166,15 @@ def comment():
             comment['id'] = 1
         comment['submission_time'] = 0
         comment['edited_count'] = 0
-        if question_id:
+        if question_id != 'None':
             comment['question_id'] = question_id
             comment['answer_id'] = None
         else:
             comment['question_id'] = None
             comment['answer_id'] = answer_id
+            answers = data_manager.get_answer_by_id(answer_id)
+            for answer in answers:
+                question_id = answer['question_id']
         data_manager.write_comments(comment)
         return redirect(f"/question/{question_id}")
     else:
