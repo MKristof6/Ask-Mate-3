@@ -20,8 +20,10 @@
         {{ q.message }}
     {% endfor %}
 </h3>
+
 {#<a href="/question/{{ question_id }}/vote-up">Vote up</a>#}
 {#<a href="/question/{{ question_id }}/vote-down">Vote down</a><br>#}
+
 {% for q in question %}
     {% if q.image != "<null>" %}
         <br><img src="../static/uploaded_images/{{ q.image }}" height="400"><br>
@@ -32,6 +34,7 @@
 {% endfor %}
 <hr>
 <br>
+
 <h3>Comments:</h3>
 {% for comment in comments %}
     {% if comment.question_id is not none %}
