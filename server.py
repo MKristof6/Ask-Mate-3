@@ -78,7 +78,6 @@ def edit_question(question_id):
         title = question['title']
         message = question['message']
     if request.method == 'POST':
-        data_manager.delete_question(question_id)
         for question in questions:
             question['title'] = request.form['title']
             question['message'] = request.form['message']
@@ -86,7 +85,7 @@ def edit_question(question_id):
                 image = path.readline()
                 if image != "<null>":
                     question['image'] = image
-        data_manager.write_question(question)
+            data_manager.edit_question(question)
         return redirect(f"/question/{question_id}")
     else:
         return render_template("edit-question.html", title=title, message=message, question_id=question_id)
@@ -234,26 +233,24 @@ def selector():
 
 
 
-@app.route('/question/<question_id>/vote-up')
+@app.route('/question/<question_id>/vote-up', methods=['GET', 'POST'])
 def vote_up_question(question_id):
-    questions = data_manager.get_question(question_id)
-    for question in questions:
-        vote = int(question['vote_number'])
-        for q in question:
-            if question[q] == question['vote_number']:
-                vote = vote + 1
-    return redirect('/', vote=vote)
+    if request.method == 'POST':
+        questions = data_manager.get_question(question_id)
+        for question in questions:
+            question['vote_number'] += 1
+            data_manager.edit_question(question)
+        return redirect('/')
 
 
-@app.route('/question/<question_id>/vote-down')
+@app.route('/question/<question_id>/vote-down', methods=['GET', 'POST'])
 def vote_down_question(question_id):
-    questions = data_manager.get_question(question_id)
-    for question in questions:
-        vote = int(question['vote_number'])
-        for q in question:
-            if question[q] == question['vote_number']:
-                vote = vote + 1
-    return redirect('/', vote=vote)
+    if request.method == 'POST':
+        questions = data_manager.get_question(question_id)
+        for question in questions:
+            question['vote_number'] -= 1
+            data_manager.edit_question(question)
+        return redirect('/')
 
 
 

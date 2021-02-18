@@ -165,15 +165,25 @@ def write_question(cursor: RealDictCursor, new_question):
     cursor.execute(query, new_question)
     cursor.close()
 
+@connection.connection_handler
+def edit_question(cursor: RealDictCursor, new_question):
+    query = """
+                UPDATE question 
+                SET id= %(id)s, submission_time = date_trunc('seconds', localtimestamp), view_number= %(view_number)s, 
+                vote_number= %(vote_number)s, title=%(title)s, message=%(message)s, image=%(image)s
+                WHERE id IN (%(id)s);
+                """
+    cursor.execute(query, new_question)
+    cursor.close()
+
 
 @connection.connection_handler
 def delete_question(cursor: RealDictCursor, question_id):
     query = """
-        DELETE FROM answer WHERE question_id IN (%s);
-         DELETE FROM comment WHERE question_id IN (%s);
+        DELETE FROM comment WHERE question_id IN (%s);
         DELETE FROM question  WHERE id IN (%s);
             """
-    cursor.execute(query, (question_id, question_id, question_id))
+    cursor.execute(query, (question_id, question_id))
     cursor.close()
 
 
@@ -195,6 +205,21 @@ def delete_comment(cursor: RealDictCursor, comment_id):
     cursor.execute(query, (comment_id,))
     cursor.close()
 
+@connection.connection_handler
+def delete_comment_by_question_id(cursor: RealDictCursor, question_id):
+    query = """
+            DELETE FROM comment WHERE question_id IN (%s);
+            """
+    cursor.execute(query, (question_id,))
+    cursor.close()
+
+@connection.connection_handler
+def delete_comment_by_answer_id(cursor: RealDictCursor, answer_id):
+    query = """
+            DELETE FROM comment WHERE answer_id IN (%s);
+            """
+    cursor.execute(query, (answer_id,))
+    cursor.close()
 
 @connection.connection_handler
 def search_by_word(cursor: RealDictCursor, search: str) -> list:
