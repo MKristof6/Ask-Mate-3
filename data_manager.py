@@ -82,7 +82,7 @@ def get_question(cursor: RealDictCursor, question_id) -> list:
 
 
 @connection.connection_handler
-def get_last_few_questions(cursor: RealDictCursor)-> list:
+def get_last_few_questions(cursor: RealDictCursor) -> list:
     query = """
                    SELECT *
                    FROM question
@@ -92,8 +92,30 @@ def get_last_few_questions(cursor: RealDictCursor)-> list:
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @connection.connection_handler
-def get_last_question(cursor: RealDictCursor)-> list:
+def get_sorted_questions_asc(cursor: RealDictCursor, sort) -> list:
+    cursor.execute(
+        sql.SQL("select * from {table} order by {col} {direction} limit 5 ").
+            format(col=sql.Identifier(sort),
+                   table=sql.Identifier('question'),
+                   direction=sql.SQL('ASC')
+                   ))
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_sorted_questions_desc(cursor: RealDictCursor, sort) -> list:
+    cursor.execute(
+        sql.SQL("select * from {table} order by {col} {direction} limit 5 ").
+            format(col=sql.Identifier(sort),
+                   table=sql.Identifier('question'),
+                   direction=sql.SQL('DESC')))
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def get_last_question(cursor: RealDictCursor) -> list:
     query = """
                SELECT MAX(id)
                FROM question
@@ -180,6 +202,7 @@ def edit_question(cursor: RealDictCursor, new_question):
 @connection.connection_handler
 def delete_question(cursor: RealDictCursor, question_id):
     query = """
+
         DELETE FROM comment WHERE question_id IN (%s);
         DELETE FROM question  WHERE id IN (%s);
             """
@@ -250,6 +273,7 @@ def get_tag_by_id(cursor: RealDictCursor, tag_id) -> list:
     cursor.execute(query, (tag_id,))
     return cursor.fetchall()
 
+
 @connection.connection_handler
 def get_last_tag(cursor: RealDictCursor) -> list:
     query = """
@@ -274,7 +298,7 @@ def get_question_id(cursor: RealDictCursor, id) -> list:
     query = """
         SELECT question_id
         FROM question_tag WHERE tag_id IN (%s);"""
-    cursor.execute(query (id,))
+    cursor.execute(query(id, ))
     return cursor.fetchall()
 
 

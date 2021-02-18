@@ -29,29 +29,26 @@
     {% if q.image != "<null>" %}
         <br><img src="../static/uploaded_images/{{ q.image }}" height="400"><br>
     {% endif %}
-    <a style="text-decoration: none; color: white" href="/question/{{ q.id }}/delete"
-       onclick="return confirm('Are you sure you want to delete the question?')">Delete
-        question</a>
 
-<h4 style="color: white">Tags:
+    <h4 id="tags">Tags:
     {% for tag in tags %}
         {% for t in tag %}
             {{ t.name }}
         {% endfor %}
     {% endfor %}</h4>
 
-<hr>
-<br>
+    <a class="button" href="/question/{{ q.id }}/delete"
+       onclick="return confirm('Are you sure you want to delete the question?')">Delete
+        question</a>
 
-<h3>Comments:</h3>
+{#<h5>Question comments:</h5>#}
 {% for comment in comments %}
     {% if comment.question_id==q.id %}
-        <p> {{ comment.message }} </p>
-
-        <a style="color: white; text-decoration: none" href=/comment/{{ comment.id }}/edit> Edit comment </a> <br>
+        <h4 id="comment"> {{ comment.message }} </h4>
+        <a class="button" href=/comment/{{ comment.id }}/edit> Edit comment </a>
         <form action="/comment/{{ comment.id }}/delete" method="post">
             <input type="hidden" id="question_id" name="question_id" value="{{ question_id }}">
-            <button type="submit"
+            <button class="button" type="submit"
                     onclick="return confirm('Are you sure you want to delete this comment?')">Delete
                 comment
             </button>
@@ -60,53 +57,56 @@
     {% endif %}
 {% endfor %}
 {% endfor %}
-<br>
-<h3>Answers:</h3>
+<h1>Answers:</h1>
 {% for answer in answers %}
 
-    <p> {{ answer.message }} </p>
+    <p class="answer"> {{ answer.message }} </p>
     {% if answer.image != "<null>" %}
         <br><img src="../static/uploaded_images/{{ answer.image }}" height="400"><br>
     {% endif %}
-    <a style="text-decoration: none; color: white" href="/answer/{{ answer.id }}/edit"> Edit answer </a> <br>
+    <a class="button" href="/answer/{{ answer.id }}/edit"> Edit answer </a>
     <form action="/answer/{{ answer.id }}/delete" method="post">
         <input type="hidden" id="question_id" name="question_id" value="{{ question_id }}">
-        <button type="submit"
+        <button class="button" type="submit"
                 onclick="return confirm('Are you sure you want to delete this answer?')">Delete
             answer
         </button>
-        <hr>
+        <br>
+        <br>
+        <a class="button" href="/answer/{{ answer.id }}/new-comment"> Add comment </a>
     </form>
 
-    <h3>Comments:</h3>
+{#    <h5>Answer comments:</h5>#}
+
     {% for comment in comments %}
         {% if comment.answer_id==answer.id %}
-            <p> {{ comment.message }} </p>
-
-            <a style="color: white; text-decoration: none" href=/comment/{{ comment.id }}/edit> Edit comment </a> <br>
+            <h4 id="comment"> {{ comment.message }} </h4>
+            <a class="button" href=/comment/{{ comment.id }}/edit> Edit comment </a>
             <form action="/comment/{{ comment.id }}/delete" method="post">
                 <input type="hidden" id="question_id" name="question_id" value="{{ question_id }}">
-                <button type="submit"
+                <button class="button" type="submit"
                         onclick="return confirm('Are you sure you want to delete this comment?')">Delete
                     comment
                 </button>
-                <hr>
+
             </form>
         {% endif %}
     {% endfor %}
 
-    <a style="text-decoration: none; color: white" href="/answer/{{ answer.id }}/new-comment"> Add comment </a> <br>
+
+    <hr style="border-top: 0.5px; color: #333333"><br>
 
 {% endfor %}
 
 
 <div id="menu">
     <a style="text-decoration: none; color: white" href="/"> Go back to list </a>
-    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/edit"> Edit question </a> <br>
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/edit"> Edit question </a><br>
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-tag"> Add tag </a><br>
     <br>
     <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-answer"> Add answer </a> <br>
     <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-comment"> Add comment </a> <br>
-    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-tag"> Add tag </a> <br>
+
 </div>
 
 

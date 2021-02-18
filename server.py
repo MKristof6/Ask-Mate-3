@@ -11,8 +11,16 @@ app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
 @app.route("/list")
 def main():
     search = request.args.get('searched')
+    sort = request.args.get('sort')
     if search:
         questions = data_manager.search_by_word(search)
+    elif sort:
+        sort = request.args.get('sort')
+        order = request.args.get('order')
+        if order == 'ascending':
+            questions = data_manager.get_sorted_questions_asc(sort)
+        else:
+            questions = data_manager.get_sorted_questions_desc(sort)
     else:
         questions = data_manager.get_last_few_questions()
     return render_template("list.html", questions=questions)
@@ -29,7 +37,6 @@ def question(question_id):
         tags.append(data_manager.get_tag_by_id(id['tag_id']))
     return render_template("question.html", question=question, question_id=question_id, answers=answers,
                            comments=comments, tags=tags)
-
 
 
 @app.route("/question/<question_id>/new-answer")
