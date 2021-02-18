@@ -36,7 +36,7 @@
 {% for comment in comments %}
     {% if comment.question_id is not none %}
         <p> {{ comment.message }} </p>
-    {% endif %}
+
     <a style="color: white; text-decoration: none" href=/comment/{{ comment.id }}/edit> Edit comment </a> <br>
     <form action="/comment/{{ comment.id }}/delete" method="post">
         <input type="hidden" id="question_id" name="question_id" value="{{ question_id }}">
@@ -46,7 +46,7 @@
         </button>
         <hr>
     </form>
-
+    {% endif %}
 {% endfor %}
 <br>
 <h3>Answers:</h3>
