@@ -7,6 +7,23 @@
 </head>
 <body>
 <hr style="border-top: 3px solid white">
+<form action="/">
+    <label for="cars">Sort by:</label>
+    <select id="sort" name="sort">
+        <option value="id">Id</option>
+        <option value="submission_time">Submission time</option>
+        <option value="view_number">View number</option>
+        <option value="vote_number">Vote number</option>
+        <option value="title">Title</option>
+        <option value="message">Message</option>
+    </select>
+    <label for="cars">Order:</label>
+    <select id="order" name="order">
+        <option value="ascending">Ascending</option>
+        <option value="descending">Descending</option>
+    </select>
+    <button type="submit">Sort</button>
+</form>
 <table>
     {% set first = namespace(value=0) %}
     {% for question in questions %}
@@ -21,13 +38,13 @@
             {% endfor %}
         {% endif %}
         <tr>
-{#            {% for key in question.keys() %}#}
-{#                {% if key != "image" %}#}
-{#                    <td>#}
-{#                        <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>#}
-{#                    </td>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
+            {#            {% for key in question.keys() %}#}
+            {#                {% if key != "image" %}#}
+            {#                    <td>#}
+            {#                        <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>#}
+            {#                    </td>#}
+            {#                {% endif %}#}
+            {#            {% endfor %}#}
         <tr>
             {% for key in question.keys() %}
                 {% if key != "image" %}
