@@ -233,6 +233,22 @@ def selector():
         return render_template("selector.html")
 
 
+
+@app.route('/question/<question_id>/vote-up')
+def vote_up_question(question_id):
+    questions = data_manager.get_question(question_id)
+    for question in questions:
+        vote = int(question['vote_number'])
+        for q in question:
+            if question[q] == question['vote_number']:
+                vote = vote + 1
+    return redirect('/', vote=vote)
+
+
+# @app.route('/question/<question_id>/vote-down')
+# def vote_down_question(question_id):
+
+
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
     if request.method == 'POST':
@@ -248,32 +264,6 @@ def new_tag(question_id):
         return redirect(f'/question/{question_id}')
     else:
         return render_template("add-tag.html", question_id=question_id, )
-
-
-# @app.route('/question/<question_id>/vote-up')
-# def vote_up_questions(question_id):
-#     questions, header = data_manager.get_questions()
-#     for question in questions:
-#         if question['id'] == question_id:
-#
-#             question['title'] = question['title']
-#             question['message'] = question['message']
-#             question['id'] = question_id
-#             question['submission_time'] = question['submission_time']
-#             question['vote_number'] = int(question['vote_number']) + 1
-#             question['image'] = question['image']
-#             questions.append(question)
-#             data_manager.write_question(questions, header)
-#             return redirect("/question/{{ question_id }}")
-
-
-# @app.route("/get-image/<image_name>")
-# def get_image(image_name):
-#
-#     try:
-#         return send_from_directory(app.config["CLIENT_IMAGES"], filename=image_name, as_attachment=True)
-#     except FileNotFoundError:
-#         abort(404)
 
 
 if __name__ == "__main__":

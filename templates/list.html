@@ -51,6 +51,10 @@
                     <td style="color: white">
                         {% if question[key] == question.title %}
                             <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>
+                        {% elif question[key] == question.vote_number %}
+                            {{ question.vote_number }}
+                            <a href="/question/{{ question.id }}/vote-up"><button type="button"> + </button></a>
+                            <a href="/question/{{ question.id }}/vote-down"><button type="button"> - </button></a>
                         {% else %}
                             {{ question[key] }}
                         {% endif %}
