@@ -86,8 +86,8 @@ def get_last_few_questions(cursor: RealDictCursor) -> list:
     query = """
                    SELECT *
                    FROM question
-                   ORDER BY id ASC
-                   LIMIT 5;
+                   WHERE id > (SELECT MAX(id) - 5 FROM question)
+                   ORDER BY id ASC;
                    """
     cursor.execute(query)
     return cursor.fetchall()
@@ -202,9 +202,10 @@ def delete_question(cursor: RealDictCursor, question_id):
 @connection.connection_handler
 def delete_answer(cursor: RealDictCursor, answer_id):
     query = """
+        DELETE FROM comment WHERE answer_id IN (%s);
         DELETE FROM answer WHERE id IN (%s);
             """
-    cursor.execute(query, (answer_id,))
+    cursor.execute(query, (answer_id,answer_id))
     cursor.close()
 
 

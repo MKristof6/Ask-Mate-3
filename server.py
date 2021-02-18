@@ -30,7 +30,7 @@ def main():
 def question(question_id):
     question = data_manager.get_question(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
-    comments = data_manager.get_comments_by_question_id(question_id)
+    comments = data_manager.get_all_comments()
     tag_ids = data_manager.get_tag_by_question_id(question_id)
     tags = []
     for id in tag_ids:
@@ -251,8 +251,16 @@ def vote_up_question(question_id):
     return redirect('/', vote=vote)
 
 
-# @app.route('/question/<question_id>/vote-down')
-# def vote_down_question(question_id):
+@app.route('/question/<question_id>/vote-down')
+def vote_down_question(question_id):
+    questions = data_manager.get_question(question_id)
+    for question in questions:
+        vote = int(question['vote_number'])
+        for q in question:
+            if question[q] == question['vote_number']:
+                vote = vote + 1
+    return redirect('/', vote=vote)
+
 
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
