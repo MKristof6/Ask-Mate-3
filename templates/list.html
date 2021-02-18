@@ -52,20 +52,16 @@
                         {% if question[key] == question.title %}
                             <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>
                         {% elif key== "vote_number" %}
-                            {{ question.vote_number }}
-                            <form action="/question/{{ question.id }}/vote-up" method="post">
-                                <button type="submit">
-                                    +
-                                </button>
-
-                            </form>
-                            <form action="/question/{{ question.id }}/vote-down" method="post">
-                                <button type="submit">
-                                                                        -
-                                </button>
-                            </form>
-                                </hr>
-                                <hr>
+                            <div class="container">
+                                {{ question.vote_number }} &ensp;
+                                <form action="/question/{{ question.id }}/vote-down" method="post">
+                                    <button class="downvote" type="submit">-</button>
+                                </form>
+                                &nbsp;
+                                <form action="/question/{{ question.id }}/vote-up" method="post">
+                                    <button class="upvote" type="submit">+</button>
+                                </form>
+                            </div>
 
                         {% else %}
                             {{ question[key] }}

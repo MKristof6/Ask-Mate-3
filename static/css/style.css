@@ -89,3 +89,43 @@ label {
 .answer {
     font-size: larger;
 }
+
+.container {
+    display: flex;
+}
+
+.upvote {
+    font: 11px Helvetica;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: none;
+    text-align: left;
+    border-radius: 12px;
+}
+
+.upvote:hover {
+    transition-duration: 0.4s;
+    background-color: lightgreen;
+    color: #242424;
+}
+
+.downvote {
+    font: 11px Helvetica;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: none;
+    text-align: left;
+    border-radius: 12px
+}
+
+.downvote:hover {
+    transition-duration: 0.4s;
+    background-color: pink;
+    color: #242424;
+}
