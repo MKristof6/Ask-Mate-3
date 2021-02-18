@@ -14,7 +14,7 @@ def main():
     if search:
         questions = data_manager.search_by_word(search)
     else:
-        questions = data_manager.get_questions()
+        questions = data_manager.get_last_few_questions()
     return render_template("list.html", questions=questions)
 
 
@@ -29,6 +29,7 @@ def question(question_id):
         tags.append(data_manager.get_tag_by_id(id['tag_id']))
     return render_template("question.html", question=question, question_id=question_id, answers=answers,
                            comments=comments, tags=tags)
+
 
 
 @app.route("/question/<question_id>/new-answer")
@@ -175,12 +176,15 @@ def comment():
             comment['id'] = 1
         comment['submission_time'] = 0
         comment['edited_count'] = 0
-        if question_id:
+        if question_id != 'None':
             comment['question_id'] = question_id
             comment['answer_id'] = None
         else:
             comment['question_id'] = None
             comment['answer_id'] = answer_id
+            answers = data_manager.get_answer_by_id(answer_id)
+            for answer in answers:
+                question_id = answer['question_id']
         data_manager.write_comments(comment)
         return redirect(f"/question/{question_id}")
     else:
