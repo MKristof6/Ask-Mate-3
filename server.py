@@ -22,7 +22,7 @@ def main():
 def question(question_id):
     question = data_manager.get_question(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
-    comments = data_manager.get_comments_by_question_id(question_id)
+    comments = data_manager.get_all_comments()
     tag_ids = data_manager.get_tag_by_question_id(question_id)
     tags = []
     for id in tag_ids:
