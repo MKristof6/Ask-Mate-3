@@ -310,3 +310,12 @@ def add_question_id_to_tag(cursor: RealDictCursor, question_id, tag_id) -> list:
     """
     cursor.execute(query, (question_id, tag_id))
     cursor.close()
+
+
+@connection.connection_handler
+def get_new_user(cursor: RealDictCursor, username):
+    query = """
+        INSERT INTO users (username)
+        VALUES ((%s))"""
+    cursor.execute(query, username)
+    cursor.close()

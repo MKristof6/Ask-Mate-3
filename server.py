@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, session, escape
 import data_manager
 from werkzeug.utils import secure_filename
 import os
@@ -277,10 +277,28 @@ def new_tag(question_id):
     else:
         return render_template("add-tag.html", question_id=question_id, )
 
-@app.route('registration')
+@app.route('/registration', methods=['GET', 'POST'])
 def registration():
+    if request.method == 'POST':
+        new_user = data_manager.get_new_user()
+        return redirect('/')
+    return render_template('registration.html')
 
-    
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['email'] = request.form['email']
+        session['password'] = request.form['password']
+        return redirect('/')
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('email', 'password')
+    return redirect('/')
+
 
 if __name__ == "__main__":
     app.run(
