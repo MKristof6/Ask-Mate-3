@@ -1,3 +1,4 @@
+
 # AskMate (sprint 3)
 
 ## Story
@@ -35,6 +36,7 @@ from the beginning of the list as much as you can.
 1. As you will work in a new repository but you need the code from the previous sprint, add the `ask-mate-3` repository as a new remote to the previous sprint's repository, then pull (merge) and push your changes into it.
     - There is a merge commit in the project's repository that contains code from the previous sprint
 
+<<<<<<< HEAD
 2. As a user I would like to have the possibility to register a new account into the system.
     - There is a `/registration` page
     - The page is linked from the front page
@@ -143,6 +145,7 @@ from the beginning of the list as much as you can.
 - Pay attention that some user stories have prerequisites!
 
 
+
 ## General requirements
 
 None
@@ -165,53 +168,4 @@ All data should be persisted in a PostgreSQL database in the following tables (y
 **question table**<br>
 *id:* A unique identifier for the question<br>
 *submission_time:* The date and time when the question was posted<br>
-*view_number:* How many times this question was displayed in the single question view<br>
-*vote_number:* The sum of votes this question has received<br>
-*title:* The title of the question<br>
-*message:* The question text<br>
-*image:* the path to the image for this question<br>
-
-**answer table**<br>
-*id:* A unique identifier for the answer<br>
-*submission_time:* The date and time when the answer was posted<br>
-*vote_number:* The sum of votes this answer has received<br>
-*question_id:* The id of the question this answer belongs to<br>
-*message:* The answer text<br>
-*image:* The path to the image for this answer<br>
-
-**tag table**<br>
-*id:* A unique identifier for the tag<br>
-*name:* The name of the tag<br>
-
-**question_tag table**<br>
-*question\_id:* The id of the question the tag belongs to<br>
-*tag\_id:* The id of the tag belongs to the question<br>
-
-**comment table**<br>
-*id:* A unique identifier for the comment<br>
-*question\_id:* The id of the question this comment belongs to (if the comment belongs to an answer, the value of this field should be NULL)<br>
-*answer\_id:* The id of the answer this comment belongs to (if the comment belongs to a question, the value of this field should be NULL)<br>
-*message:* The comment text<br>
-*submission\_time:* The date and time the comment was posted or updated<br>
-*edited\_number::* How many times this comment was edited<br>
-
-### Database and sample data
-
-To init the database use the `sample_data/askmatepart2-sample-data.sql` file in your repository.
-
-
-- <i class="far fa-exclamation"></i> [Working with more complex data](project/curriculum/materials/pages/sql/sql-working-with-data.md)
-- [SQL injection](project/curriculum/materials/pages/web-security/sql-injection.md)
-- [Best practices for Python/Psycopg/Postgres](project/curriculum/materials/pages/python/tips-python-psycopg-postgres.md)
-=======
-- <i class="far fa-exclamation"></i> [Installing and setting up PostgreSQL](project/curriculum/materials/pages/tools/installing-postgresql.md)
-- <i class="far fa-exclamation"></i> [Installing psycopg2](project/curriculum/materials/pages/tools/installing-psycopg2.md)
-- <i class="far fa-exclamation"></i> [Best practices for Python/Psycopg/Postgres](project/curriculum/materials/pages/python/tips-python-psycopg-postgres.md)
-- [Setting up a database connection in PyCharm](project/curriculum/materials/pages/tools/pycharm-database.md)
->>>>>>> ask-mate-2
-- [Date/Time handling in psycopg2](https://www.psycopg.org/docs/usage.html?highlight=gunpoint#date-time-objects-adaptation)
-- <i class="far fa-book-open"></i> [PostgreSQL documentation page on Queries](https://www.postgresql.org/docs/current/queries.html)
-- <i class="far fa-book-open"></i> [PostgreSQL documentation page Data Manipulation](https://www.postgresql.org/docs/current/dml.html)
-
-
 

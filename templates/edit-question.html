@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit question</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+</head>
+<body>
+<h1>
+    Edit Question
+</h1>
+<form action="/question/{{ question_id }}/edit" method="POST">
+    <label for="add_title">Title of the question:</label><br>
+    <textarea id="new_question_title" name="title" rows="4" cols="30" autofocus required>
+        {% if title is not none %}{{ title }}{% endif %}
+    </textarea><br>
+    <label for="edit_question">New question:</label><br>
+    <textarea id="edit_question" name="message" rows="4" cols="60" required>
+        {% if message is not none %}{{ message }}{% endif %}
+    </textarea><br>
+    <p>Select image to upload:</p>
+    <script>
+        function openwnd() {
+            window.open("../../selector");
+        }
+    </script>
+    <input class="button" type="button" value="Choose Image" onclick="openwnd()">
+    <br>
+    <br>
+    <input class="button" type="submit" value="Submit">
+
+</form>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}"> Go back to Question </a>
+</div>
+</body>
+</html>

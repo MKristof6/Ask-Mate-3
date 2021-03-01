@@ -1,0 +1,131 @@
+body {
+    background: white url(../images/banner-bg.png) no-repeat top left;
+    background-size: cover;
+    margin-left: 220px;
+    margin-top: 75px;
+    margin-bottom: 120px;
+    font-family: 'helvetica', 'Ubuntu', 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+}
+
+table {
+    width: 90%;
+}
+
+
+tr:hover {
+    background-color: rgb(169, 219, 225);
+    background-color: rgba(255, 255, 255, 0.25)
+}
+
+th, td {
+    border-bottom: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+#data {
+    color: white;
+    font-weight: 600;
+}
+
+
+#menu {
+    position: absolute;
+    top: 75px;
+    left: 0;
+    width: 200px;
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 1.5em;
+    margin: 10px;
+    padding: 5px;
+}
+
+hr {
+    border-top: 1px solid white
+}
+
+h1, h3, h4, h5, p {
+    color: white
+}
+
+label {
+    color: white
+}
+
+#tags {
+    color: #c7e0f1;
+    font-size: 0.8em;
+    font-style: italic
+}
+
+#comment {
+    color: #c7e0f1;
+    font-size: 0.8em;
+    font-style: italic
+}
+
+.button {
+    font: 11px Helvetica;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: none;
+    text-align: left;
+    border-radius: 12px;
+}
+
+.button:hover {
+    transition-duration: 0.4s;
+    background-color: white;
+    color: #242424;
+}
+
+.answer {
+    font-size: larger;
+}
+
+.container {
+    display: flex;
+}
+
+.upvote {
+    font: 11px Helvetica;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: none;
+    text-align: left;
+    border-radius: 12px;
+}
+
+.upvote:hover {
+    transition-duration: 0.4s;
+    background-color: lightgreen;
+    color: #242424;
+}
+
+.downvote {
+    font: 11px Helvetica;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border: none;
+    text-align: left;
+    border-radius: 12px
+}
+
+.downvote:hover {
+    transition-duration: 0.4s;
+    background-color: pink;
+    color: #242424;
+}

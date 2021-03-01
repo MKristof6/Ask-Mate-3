@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New question comment</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+</head>
+<body>
+<form action="/comment", method="post">
+    <label for="comment">New comment:</label><br>
+    <textarea id="comment" name="comment" rows="4" cols="60" autofocus required></textarea>
+    <input name="question_id" id="question_id" value="{{ question_id }}" type="hidden">
+    <br>
+     <input name="answer_id" id="answer_id" value="{{ answer_id }}" type="hidden">
+    <br>
+    <button class="button" type="submit">Save comment!</button>
+</form>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}"> Go back to Question </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit comment</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+</head>
+<body>
+
+<h1>
+    Edit comment
+</h1>
+
+<form action="/comment/{{ comment_id }}/edit" method="POST">
+    <label for="edit-message">Edit the comment:</label><br>
+    <textarea id="edit-message" name="message" rows="4" cols="30" autofocus required>
+        {% if message is not none %}{{ message }}{% endif %}
+    </textarea><br>
+    <input class="button" type="submit" value="Submit">
+</form>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}"> Go back to Question </a>
+</div>
+</body>
+</html>

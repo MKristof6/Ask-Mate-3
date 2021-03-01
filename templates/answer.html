@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New Answer</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+</head>
+<body>
+<form action="/answer", method="post">
+    <label for="add-answer">New answer:</label><br>
+    <textarea id="add-answer" name="answer" rows="4" cols="60" autofocus required></textarea>
+    <input name="question_id" id="question_id" value="{{ question_id }}" type="hidden"><br>
+    <p>Select image to upload:</p>
+    <script>
+        function openwnd() {
+            window.open("../../selector");
+        }
+    </script>
+    <input class="button" type="button" value="Choose Image" onclick="openwnd()"><br>
+    <button class="button" type="submit">Add answer</button>
+</form>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}"> Go back to Question </a>
+</div>
+</body>
+</html>

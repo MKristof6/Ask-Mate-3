@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+<body>
+<hr style="border-top: 3px solid white">
+<form action="/" method="get">
+    <label for="sort">Sort by:</label>
+    <select id="sort" name="sort">
+        <option value="id">Id</option>
+        <option value="submission_time">Submission time</option>
+        <option value="view_number">View number</option>
+        <option value="vote_number">Vote number</option>
+        <option value="title">Title</option>
+        <option value="message">Message</option>
+    </select>
+    <label for="order">Order:</label>
+    <select id="order" name="order">
+        <option value="ascending">Ascending</option>
+        <option value="descending">Descending</option>
+    </select>
+    <button type="submit">Sort</button>
+</form>
+<table>
+    {% set first = namespace(value=0) %}
+    {% for question in questions %}
+        {% if first.value == 0 %}
+            {% set first.value = first.value + 1 %}
+            {% for item in question.keys() %}
+                {% if item != "image" %}
+                    <th style="color: white">
+                        {{ item }}
+                    </th>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <tr>
+            {#            {% for key in question.keys() %}#}
+            {#                {% if key != "image" %}#}
+            {#                    <td>#}
+            {#                        <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>#}
+            {#                    </td>#}
+            {#                {% endif %}#}
+            {#            {% endfor %}#}
+        <tr>
+            {% for key in question.keys() %}
+                {% if key != "image" %}
+                    <td style="color: white">
+                        {% if question[key] == question.title %}
+                            <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>
+                        {% elif key== "vote_number" %}
+                            <div class="container">
+                                {{ question.vote_number }} &ensp;
+                                <form action="/question/{{ question.id }}/vote-down" method="post">
+                                    <button class="downvote" type="submit">-</button>
+                                </form>
+                                &nbsp;
+                                <form action="/question/{{ question.id }}/vote-up" method="post">
+                                    <button class="upvote" type="submit">+</button>
+                                </form>
+                            </div>
+
+                        {% else %}
+                            {{ question[key] }}
+                        {% endif %}
+                    </td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        </tr>
+    {% endfor %}
+</table>
+<a id="menu" href="/add-question"> New question </a>
+
+<form action="/" method="get">
+    <label style="color: white">Search for word: </label>
+    <input type="text" name="searched" id="search_name" required>
+    <input class="search-txt" type="image" src="https://www.about.us/assets/images/icons/search-basic-180.png"
+           alt="text" value="Search" width="25" placeholder="Type to search">
+
+</form>
+</body>
+</html>

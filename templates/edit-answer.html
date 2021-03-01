@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit answer</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
+</head>
+<body>
+
+<h1>
+    Edit answer
+</h1>
+
+<form action="/answer/{{ answer_id }}/edit" method="POST">
+    <label for="edit-message">New answer:</label><br>
+    <textarea id="edit-message" name="message" rows="4" cols="30" autofocus required>
+        {% if message is not none %}{{ message }}{% endif %}
+    </textarea><br>
+    <p>Select image to upload:</p>
+    <script>
+        function openwnd() {
+            window.open("../../selector");
+        }
+    </script>
+    <input class="button" type="button" value="Choose Image" onclick="openwnd()">
+    <br>
+    <br>
+    <input class="button" type="submit" value="Submit">
+</form>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}"> Go back to Question </a>
+</div>
+</body>
+</html>
