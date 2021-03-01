@@ -298,7 +298,7 @@ def get_question_id(cursor: RealDictCursor, id) -> list:
     query = """
         SELECT question_id
         FROM question_tag WHERE tag_id IN (%s);"""
-    cursor.execute(query(id, ))
+    cursor.execute(query, (id, ))
     return cursor.fetchall()
 
 
@@ -313,9 +313,9 @@ def add_question_id_to_tag(cursor: RealDictCursor, question_id, tag_id) -> list:
 
 
 @connection.connection_handler
-def get_new_user(cursor: RealDictCursor, username):
+def get_new_user(cursor: RealDictCursor, new_user):
     query = """
-        INSERT INTO users (username)
-        VALUES ((%s))"""
-    cursor.execute(query, username)
+        INSERT INTO users (username, registration_date)
+        VALUES (%(username)s, date_trunc('second', localtimestamp))"""
+    cursor.execute(query, new_user)
     cursor.close()

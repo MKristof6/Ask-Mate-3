@@ -5,13 +5,17 @@ import os
 
 app = Flask(__name__)
 app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/")
 @app.route("/list")
 def main():
+    session_message = "You are not logged in"
     search = request.args.get('searched')
     sort = request.args.get('sort')
+    if 'username' in session:
+        session_message = 'Hello, %s' % escape(session['username'])
     if search:
         questions = data_manager.search_by_word(search)
     elif sort:
@@ -23,7 +27,7 @@ def main():
             questions = data_manager.get_sorted_questions_desc(sort)
     else:
         questions = data_manager.get_last_few_questions()
-    return render_template("list.html", questions=questions)
+    return render_template("list.html", questions=questions, message=session_message)
 
 
 @app.route("/question/<question_id>")
@@ -277,10 +281,13 @@ def new_tag(question_id):
     else:
         return render_template("add-tag.html", question_id=question_id, )
 
+
 @app.route('/registration', methods=['GET', 'POST'])
 def registration():
+    user = {}
     if request.method == 'POST':
-        new_user = data_manager.get_new_user()
+        user['username'] = request.form['username']
+        data_manager.get_new_user(user)
         return redirect('/')
     return render_template('registration.html')
 
@@ -288,15 +295,15 @@ def registration():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['email'] = request.form['email']
-        session['password'] = request.form['password']
+        session['username'] = request.form['username']
+        # session['password'] = request.form['password']
         return redirect('/')
     return render_template('login.html')
 
 
 @app.route('/logout')
 def logout():
-    session.pop('email', 'password')
+    session.pop('username')
     return redirect('/')
 
 

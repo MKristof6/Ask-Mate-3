@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 <body>
+{{ message }}
 <hr style="border-top: 3px solid white">
 <form action="/" method="get">
     <label for="sort">Sort by:</label>
@@ -75,7 +76,8 @@
 </table>
 <a id="menu" href="/add-question"> New question </a>
 <a href="/registration"> Registration </a><br>
-<a href="/login"> Login </a>
+<a href="/login"> Login </a><br>
+<a href="/logout"> Logout </a>
 
 <form action="/" method="get">
     <label style="color: white">Search for word: </label>
