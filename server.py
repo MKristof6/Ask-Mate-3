@@ -277,6 +277,10 @@ def new_tag(question_id):
     else:
         return render_template("add-tag.html", question_id=question_id, )
 
+@app.route('registration')
+def registration():
+
+    
 
 if __name__ == "__main__":
     app.run(
