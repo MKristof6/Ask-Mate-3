@@ -142,35 +142,76 @@ from the beginning of the list as much as you can.
   previously created queries where it's applicable.
 - Pay attention that some user stories have prerequisites!
 
-## Background materials
 
-### Git
+## General requirements
 
-- <i class="far fa-exclamation"></i> [Working with the `git remote` command](https://git-scm.com/docs/git-remote)
-- <i class="far fa-book-open"></i> [Merge vs rebase](project/curriculum/materials/pages/git/merge-vs-rebase.md)
-- <i class="far fa-book-open"></i> [Mastering git](project/curriculum/materials/pages/git/mastering-git.md)
+None
 
-### SQL
+## Hints
+
+- It's important that if the database table has a timestamp column then you cannot insert a UNIX timestamp value directly into that table, you should use:
+    - either strings in the following format '1999-01-08 04&colon;05&colon;06',
+    - or if you use psycopg2 and the datetime module, you can pass a datetime object to the SQL query as parameter (details in the background materials: [Date/Time handling in psycopg2](https://www.psycopg.org/docs/usage.html?highlight=gunpoint#date-time-objects-adaptation))
+- Pay attention on the order of inserting data into the tables, because you may violate foreign key constraints (that means e.g. if you insert data into the question_tag before you insert into the tag table the corresponding tag id you want to refer to then it won't exist yet)!
+- You can import the sample data file into `psql` with the `\i` command or run it via the Database tool in PyCharm.
+- Some user stories may require to deal with CSS as well, but do not deal with CSS too much. It's more important that you write proper queries, have a working connection with psycopg2, have a clean Python code than create an amazingly beautiful web application (although if you have time, of course it's not forbidden to do so :smiley:).
+
+### Data models
+
+All data should be persisted in a PostgreSQL database in the following tables (you can ignore data in the not implemented fields):
+
+![AskMate data model part 2](media/web-python/askmate-data-model-part-2.png)
+
+**question table**<br>
+*id:* A unique identifier for the question<br>
+*submission_time:* The date and time when the question was posted<br>
+*view_number:* How many times this question was displayed in the single question view<br>
+*vote_number:* The sum of votes this question has received<br>
+*title:* The title of the question<br>
+*message:* The question text<br>
+*image:* the path to the image for this question<br>
+
+**answer table**<br>
+*id:* A unique identifier for the answer<br>
+*submission_time:* The date and time when the answer was posted<br>
+*vote_number:* The sum of votes this answer has received<br>
+*question_id:* The id of the question this answer belongs to<br>
+*message:* The answer text<br>
+*image:* The path to the image for this answer<br>
+
+**tag table**<br>
+*id:* A unique identifier for the tag<br>
+*name:* The name of the tag<br>
+
+**question_tag table**<br>
+*question\_id:* The id of the question the tag belongs to<br>
+*tag\_id:* The id of the tag belongs to the question<br>
+
+**comment table**<br>
+*id:* A unique identifier for the comment<br>
+*question\_id:* The id of the question this comment belongs to (if the comment belongs to an answer, the value of this field should be NULL)<br>
+*answer\_id:* The id of the answer this comment belongs to (if the comment belongs to a question, the value of this field should be NULL)<br>
+*message:* The comment text<br>
+*submission\_time:* The date and time the comment was posted or updated<br>
+*edited\_number::* How many times this comment was edited<br>
+
+### Database and sample data
+
+To init the database use the `sample_data/askmatepart2-sample-data.sql` file in your repository.
+
 
 - <i class="far fa-exclamation"></i> [Working with more complex data](project/curriculum/materials/pages/sql/sql-working-with-data.md)
 - [SQL injection](project/curriculum/materials/pages/web-security/sql-injection.md)
 - [Best practices for Python/Psycopg/Postgres](project/curriculum/materials/pages/python/tips-python-psycopg-postgres.md)
+=======
+- <i class="far fa-exclamation"></i> [Installing and setting up PostgreSQL](project/curriculum/materials/pages/tools/installing-postgresql.md)
+- <i class="far fa-exclamation"></i> [Installing psycopg2](project/curriculum/materials/pages/tools/installing-psycopg2.md)
+- <i class="far fa-exclamation"></i> [Best practices for Python/Psycopg/Postgres](project/curriculum/materials/pages/python/tips-python-psycopg-postgres.md)
+- [Setting up a database connection in PyCharm](project/curriculum/materials/pages/tools/pycharm-database.md)
+>>>>>>> ask-mate-2
 - [Date/Time handling in psycopg2](https://www.psycopg.org/docs/usage.html?highlight=gunpoint#date-time-objects-adaptation)
 - <i class="far fa-book-open"></i> [PostgreSQL documentation page on Queries](https://www.postgresql.org/docs/current/queries.html)
 - <i class="far fa-book-open"></i> [PostgreSQL documentation page Data Manipulation](https://www.postgresql.org/docs/current/dml.html)
 
-### Workflow
 
-- <i class="far fa-exclamation"></i> [Gitflow workflow](project/curriculum/materials/pages/git/git-branching.md)
 
-### Web basics (Sessions/Flask)
-
-- <i class="far fa-exclamation"></i> [Sessions](project/curriculum/materials/pages/web/authentication-sessions.md)
-- <i class="far fa-exclamation"></i> [Salted password hashing](project/curriculum/materials/pages/web-security/salted-password-hashing.md)
-- <i class="far fa-exclamation"></i> [Flask documentation](http://flask.palletsprojects.com/) (especially the quickstart#the-request-object and quickstart#sessions part)
-- [Flask/Jinja Tips & Tricks](project/curriculum/materials/pages/web/web-with-python-tips.md)
-- [Passing data from browser](project/curriculum/materials/pages/web/passing-data-from-browser.md)
-- <i class="far fa-book-open"></i> [HTTP is stateless](project/curriculum/materials/pages/web/authentication-http-stateless.md)
-- <i class="far fa-book-open"></i> [Cookies](project/curriculum/materials/pages/web/authentication-cookies.md)
-- <i class="far fa-book-open"></i> [Jinja2 documentation](https://jinja.palletsprojects.com/en/2.10.x/templates/)
-- <i class="far fa-book-open"></i> [Collection of web resources](project/curriculum/materials/pages/web/resources.md)
