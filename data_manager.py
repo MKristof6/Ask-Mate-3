@@ -200,6 +200,18 @@ def edit_question(cursor: RealDictCursor, new_question):
 
 
 @connection.connection_handler
+def edit_answer(cursor: RealDictCursor, answer_id, new_vote):
+    query = """
+                UPDATE answer 
+                SET id= %(id)s, submission_time = date_trunc('seconds', localtimestamp), vote_number= %(new_vote)s,
+                 question_id= %(question_id)s, message=%(message)s, image=%(image)s
+                WHERE id IN (%(id)s);
+                """
+    cursor.execute(query, answer_id)
+    cursor.close()
+
+
+@connection.connection_handler
 def delete_question(cursor: RealDictCursor, question_id):
     query = """
 

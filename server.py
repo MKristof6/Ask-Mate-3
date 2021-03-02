@@ -263,6 +263,30 @@ def vote_down_question(question_id):
         return redirect('/')
 
 
+@app.route('/question/<question_id>/upvote-answer/<answer_id>', methods=['GET', 'POST'])
+def upvote_answer(question_id, answer_id):
+    if request.method == 'POST':
+        answers = data_manager.get_answers_by_question_id(question_id)
+        data_manager.delete_answer(answer_id)
+        for answer in answers:
+            if answer['id'] == answer_id:
+                answer['vote_number'] += 1
+        data_manager.write_answers(answer)
+        return redirect(f'/question/{question_id}')
+
+
+@app.route('/question/<question_id>/downvote-answer/<answer_id>', methods=['GET', 'POST'])
+def downvote_answer(question_id, answer_id):
+    if request.method == 'POST':
+        answers = data_manager.get_answers_by_question_id(question_id)
+        # data_manager.delete_answer(answer_id)
+        for answer in answers:
+            if answer['id'] == answer_id:
+               new_vote = answer['vote_number'] - 1
+        data_manager.edit_answer(answer_id, new_vote)
+        return redirect(f'/question/{question_id}')
+
+
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
     if request.method == 'POST':

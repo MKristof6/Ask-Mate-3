@@ -134,7 +134,7 @@ label {
 
 .user-bar {
     position: absolute;
-    top: 0px;
+    top: 0;
     right: 120px;
     width: 100%;
     height: 75px;
@@ -197,4 +197,11 @@ label {
 
 .dropmark {
     fill: white;
+}
+
+.rate_answr {
+    height: 11px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
