@@ -349,11 +349,10 @@ def delete_tag_by_id(cursor: RealDictCursor, tag_id):
 def get_all_users(cursor: RealDictCursor):
     query = """
         SELECT * FROM users
-        ORDER BY name 
+        ORDER BY username 
     """
     cursor.execute(query)
-    cursor.close()
-
+    return cursor.fetchall()
 
 @connection.connection_handler
 def get_user(cursor: RealDictCursor, user_id):
@@ -362,7 +361,7 @@ def get_user(cursor: RealDictCursor, user_id):
           WHERE id IN (%s);
         """
     cursor.execute(query, (user_id, ))
-    cursor.close()
+    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -372,7 +371,7 @@ def get_user_question(cursor: RealDictCursor, user_id):
         WHERE user_id IN (%s);
         """
     cursor.execute(query, (user_id, ))
-    cursor.close()
+    return cursor.fetchall()
 
 @connection.connection_handler
 def get_user_answers(cursor: RealDictCursor, user_id):
@@ -381,7 +380,7 @@ def get_user_answers(cursor: RealDictCursor, user_id):
         WHERE user_id IN (%s);
         """
     cursor.execute(query, (user_id, ))
-    cursor.close()
+    return cursor.fetchall()
 
 
 @connection.connection_handler
@@ -391,7 +390,7 @@ def get_user_comments(cursor: RealDictCursor, user_id):
         WHERE user_id IN (%s);
         """
     cursor.execute(query, (user_id, ))
-    cursor.close()
+    return cursor.fetchall()
 
 
 
