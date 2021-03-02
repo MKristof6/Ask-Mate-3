@@ -292,13 +292,14 @@ def registration():
     return render_template('registration.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/userbar', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         session['username'] = request.form['username']
         # session['password'] = request.form['password']
-        return redirect('/')
-    return render_template('login.html')
+        return redirect("/")
+        # return render_template("list.html", username=session['username'])
+    # return render_template('login.html')
 
 
 @app.route('/logout')
