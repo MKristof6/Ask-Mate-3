@@ -297,8 +297,9 @@ def add_new_tag(cursor: RealDictCursor, tags) -> list:
 def get_question_id(cursor: RealDictCursor, id) -> list:
     query = """
         SELECT question_id
-        FROM question_tag WHERE tag_id IN (%s);"""
-    cursor.execute(query, (id, ))
+        FROM question_tag WHERE tag_id IN (%s);
+        """
+    cursor.execute(query, (id,))
     return cursor.fetchall()
 
 
@@ -309,6 +310,39 @@ def add_question_id_to_tag(cursor: RealDictCursor, question_id, tag_id) -> list:
     VALUES ((%s), (%s)) 
     """
     cursor.execute(query, (question_id, tag_id))
+    cursor.close()
+
+
+@connection.connection_handler
+def get_new_user(cursor: RealDictCursor, new_user):
+    query = """
+        INSERT INTO users (username, registration_date,
+        count_of_questions, count_of_answers, count_of_comments, reputation)
+        VALUES (%(username)s, date_trunc('second', localtimestamp), 
+        %(count_of_questions)s, %(count_of_answers)s, %(count_of_comments)s, %(reputation)s);
+        """
+    cursor.execute(query, new_user)
+    cursor.close()
+
+
+@connection.connection_handler
+def get_all_tags(cursor: RealDictCursor):
+    query = """
+        SELECT name, count(name) AS usage
+        FROM tag
+        GROUP BY name;
+        """
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@connection.connection_handler
+def delete_tag_by_id(cursor: RealDictCursor, tag_id):
+    query = """
+        DELETE FROM question_tag WHERE tag_id IN (%s);
+        DELETE FROM tag WHERE id IN (%s);
+        """
+    cursor.execute(query, (tag_id, tag_id))
     cursor.close()
 
 @connection.connection_handler

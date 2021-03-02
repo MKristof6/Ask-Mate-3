@@ -5,13 +5,17 @@ import os
 
 app = Flask(__name__)
 app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/")
 @app.route("/list")
 def main():
+    session_message = "You are not logged in"
     search = request.args.get('searched')
     sort = request.args.get('sort')
+    if 'username' in session:
+        session_message = 'Hello, %s' % escape(session['username'])
     if search:
         questions = data_manager.search_by_word(search)
     elif sort:
@@ -23,7 +27,7 @@ def main():
             questions = data_manager.get_sorted_questions_desc(sort)
     else:
         questions = data_manager.get_last_few_questions()
-    return render_template("list.html", questions=questions)
+    return render_template("list.html", questions=questions, message=session_message)
 
 
 @app.route("/question/<question_id>")
@@ -56,14 +60,10 @@ def new_answer_comment(answer_id):
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
-    last_question = data_manager.get_last_question()
-    for q in last_question:
-        last_id = q['max']
     question = {}
     if request.method == 'POST':
         question['title'] = request.form['title']
         question['message'] = request.form['message']
-        question['id'] = int(last_id) + 1
         question['submission_time'] = 0
         question['view_number'] = 0
         question['vote_number'] = 0
@@ -144,14 +144,7 @@ def answer():
     answer = {}
     if request.method == 'POST':
         question_id = request.form['question_id']
-        last_answer = data_manager.get_last_answer()
-        for a in last_answer:
-            last_id = a['max']
         answer['message'] = request.form['answer']
-        if last_id:
-            answer['id'] = int(last_id) + 1
-        else:
-            answer['id'] = 1
         answer['submission_time'] = 0
         answer['vote_number'] = 0
         with open("fullpath.txt") as path:
@@ -260,6 +253,25 @@ def vote_down_question(question_id):
         return redirect('/')
 
 
+@app.route('/question/<question_id>/upvote-answer/<answer_id>', methods=['GET', 'POST'])
+def upvote_answer(question_id, answer_id):
+    if request.method == 'POST':
+        answers = data_manager.get_answers_by_question_id(question_id)
+        for a in answers:
+            if a['id'] == int(answer_id):
+                data_manager.up_vote(answer_id)
+        return redirect(f'/question/{question_id}')
+
+
+@app.route('/question/<question_id>/downvote-answer/<answer_id>', methods=['GET', 'POST'])
+def downvote_answer(question_id, answer_id):
+    if request.method == 'POST':
+        answers = data_manager.get_answers_by_question_id(question_id)
+        for a in answers:
+            if a['id'] == int(answer_id):
+                data_manager.down_vote(answer_id)
+        return redirect(f'/question/{question_id}')
+
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
@@ -276,6 +288,47 @@ def new_tag(question_id):
         return redirect(f'/question/{question_id}')
     else:
         return render_template("add-tag.html", question_id=question_id, )
+
+
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    user = {}
+    if request.method == 'POST':
+        user['username'] = request.form['username']
+        user['count_of_questions'] = 0
+        user['count_of_answers'] = 0
+        user['count_of_comments'] = 0
+        user['reputation'] = 0
+        data_manager.get_new_user(user)
+        return redirect('/')
+    return render_template('registration.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        session['username'] = request.form['username']
+        # session['password'] = request.form['password']
+        return redirect('/')
+    return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('username')
+    return redirect('/')
+
+
+@app.route('/tags')
+def tags():
+    all_tag = data_manager.get_all_tags()
+    return render_template("tags.html", all_tag=all_tag)
+
+
+@app.route("/question/<question_id>/delete_tag/<tag_id>", methods=['GET', 'POST'])
+def delete_tag(question_id, tag_id):
+    data_manager.delete_tag_by_id(tag_id)
+    return redirect(f"/question/{question_id}")
 
 
 @app.route('/users')

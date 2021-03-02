@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
 </head>
 <body>
+{% include 'userbar.html' %}
 <form action="/answer", method="post">
     <label for="add-answer">New answer:</label><br>
     <textarea id="add-answer" name="answer" rows="4" cols="60" autofocus required></textarea>
