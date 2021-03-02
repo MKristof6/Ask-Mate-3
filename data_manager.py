@@ -315,7 +315,8 @@ def add_question_id_to_tag(cursor: RealDictCursor, question_id, tag_id) -> list:
 @connection.connection_handler
 def get_new_user(cursor: RealDictCursor, new_user):
     query = """
-        INSERT INTO users (username, registration_date)
+        INSERT INTO users (username, registration_date,
+         count_of_questions, count_of_answers, count_of_comments, reputation)
         VALUES (%(username)s, date_trunc('second', localtimestamp))"""
     cursor.execute(query, new_user)
     cursor.close()
