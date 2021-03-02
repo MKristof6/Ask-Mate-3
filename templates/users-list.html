@@ -18,7 +18,12 @@
         <tr>
             {% for key in user.keys() %}
                     <td style="color: white">
+                        {% if user[key] == user.username %}
+                            <a id="data" href="/user/{{ user.id }}"> {{ user[key] }} </a>
+
+                        {% else %}
                         {{ user[key] }}
+                    {% endif %}
                     </td>
             {% endfor %}
         </tr>
