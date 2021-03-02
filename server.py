@@ -183,9 +183,17 @@ def comment():
         return render_template("comment.html")
 
 
-@app.route("/question/<question_id>/delete")
+@app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
-    data_manager.delete_question(question_id)
+    answers = data_manager.get_all_answers()
+    for a in answers:
+        if a['question_id'] == int(question_id):
+            comments = data_manager.get_all_comments()
+            for c in comments:
+                if a['id'] == c['answer_id']:
+                    comment_id = c['id']
+                    data_manager.delete_comment(comment_id)
+    data_manager.delete_question_all(question_id)
     return redirect("/")
 
 

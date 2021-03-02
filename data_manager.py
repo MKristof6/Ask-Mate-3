@@ -169,15 +169,14 @@ def edit_question(cursor: RealDictCursor, new_question):
 
 
 @connection.connection_handler
-def delete_question(cursor: RealDictCursor, question_id):
+def delete_question_all(cursor: RealDictCursor, question_id):
     query = """
-        DELETE FROM comment WHERE answer_id IN (%s);
         DELETE FROM answer WHERE question_id IN (%s);
         DELETE FROM comment WHERE question_id IN (%s);
         DELETE FROM question_tag WHERE question_id IN (%s);
-        DELETE FROM question WHERE id IN (%s); 
+        DELETE FROM question WHERE id IN (%s);
         """
-    cursor.execute(query, (question_id, question_id, question_id, question_id, question_id))
+    cursor.execute(query, (question_id, question_id, question_id, question_id))
     cursor.close()
 
 
@@ -247,7 +246,7 @@ def get_tag_by_id(cursor: RealDictCursor, tag_id):
         FROM tag
         where id IN (%s);
         """
-    cursor.execute(query, tag_id)
+    cursor.execute(query, (tag_id, ))
     return cursor.fetchall()
 
 
