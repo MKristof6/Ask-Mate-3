@@ -298,7 +298,7 @@ def get_question_id(cursor: RealDictCursor, id) -> list:
     query = """
         SELECT question_id
         FROM question_tag WHERE tag_id IN (%s);"""
-    cursor.execute(query(id, ))
+    cursor.execute(query, (id, ))
     return cursor.fetchall()
 
 
@@ -319,3 +319,47 @@ def get_all_users(cursor: RealDictCursor):
     """
     cursor.execute(query)
     cursor.close()
+
+
+@connection.connection_handler
+def get_user(cursor: RealDictCursor, user_id):
+    query = """
+          SELECT * FROM users  
+          WHERE id IN (%s);
+        """
+    cursor.execute(query, (user_id, ))
+    cursor.close()
+
+
+@connection.connection_handler
+def get_user_question(cursor: RealDictCursor, user_id):
+    query = """
+        SELECT * FROM question
+        WHERE user_id IN (%s);
+        """
+    cursor.execute(query, (user_id, ))
+    cursor.close()
+
+@connection.connection_handler
+def get_user_answers(cursor: RealDictCursor, user_id):
+    query = """
+        SELECT * FROM answer
+        WHERE user_id IN (%s);
+        """
+    cursor.execute(query, (user_id, ))
+    cursor.close()
+
+
+@connection.connection_handler
+def get_user_comments(cursor: RealDictCursor, user_id):
+    query = """
+        SELECT * FROM comment
+        WHERE user_id IN (%s);
+        """
+    cursor.execute(query, (user_id, ))
+    cursor.close()
+
+
+
+
+
