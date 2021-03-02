@@ -6,150 +6,121 @@ import connection
 
 
 @connection.connection_handler
-def get_answers_by_question_id(cursor: RealDictCursor, question_id) -> list:
+def get_answers_by_question_id(cursor: RealDictCursor, question_id):
     query = """
-            SELECT *
-            FROM answer
-            WHERE question_id IN (%s)
-            ORDER BY id 
-            """
-    cursor.execute(query, (question_id,))
+        SELECT *
+        FROM answer
+        WHERE question_id IN (%s)
+        ORDER BY id; 
+        """
+    cursor.execute(query, question_id)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_comments_by_question_id(cursor: RealDictCursor, question_id) -> list:
+def get_comments_by_question_id(cursor: RealDictCursor, question_id):
     query = """
-            SELECT *
-            FROM comment
-            WHERE question_id IN (%s)
-            ORDER BY id 
-            """
-    cursor.execute(query, (question_id,))
+        SELECT *
+        FROM comment
+        WHERE question_id IN (%s)
+        ORDER BY id;
+        """
+    cursor.execute(query, question_id)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_answer_by_id(cursor: RealDictCursor, answer_id) -> list:
+def get_answer_by_id(cursor: RealDictCursor, answer_id):
     query = """
-            SELECT *
-            FROM answer
-            WHERE id IN (%s)
-            """
-    cursor.execute(query, (answer_id,))
+        SELECT *
+        FROM answer
+        WHERE id IN (%s);
+        """
+    cursor.execute(query, (answer_id, ))
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_comment_by_id(cursor: RealDictCursor, comment_id) -> list:
+def get_comment_by_id(cursor: RealDictCursor, comment_id):
     query = """
-            SELECT *
-            FROM comment
-            WHERE id IN (%s)
-            """
-    cursor.execute(query, (comment_id,))
+        SELECT *
+        FROM comment
+        WHERE id IN (%s);
+        """
+    cursor.execute(query, (comment_id, ))
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_all_answers(cursor: RealDictCursor) -> list:
+def get_all_answers(cursor: RealDictCursor):
     query = """
-            SELECT *
-            FROM answer
-            ORDER BY id """
+        SELECT *
+        FROM answer
+        ORDER BY id;
+        """
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_all_comments(cursor: RealDictCursor) -> list:
+def get_all_comments(cursor: RealDictCursor):
     query = """
-            SELECT *
-            FROM comment
-            ORDER BY id """
+        SELECT *
+        FROM comment
+        ORDER BY id;
+        """
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_question(cursor: RealDictCursor, question_id) -> list:
+def get_question(cursor: RealDictCursor, question_id):
     query = """
-               SELECT *
-               FROM question
-               WHERE id IN (%s)"""
-    cursor.execute(query, (question_id,))
+        SELECT *
+        FROM question
+        WHERE id IN (%s);
+        """
+    cursor.execute(query, question_id)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_last_few_questions(cursor: RealDictCursor) -> list:
+def get_last_few_questions(cursor: RealDictCursor):
     query = """
-                   SELECT *
-                   FROM question
-                   WHERE id > (SELECT MAX(id) - 5 FROM question)
-                   ORDER BY id ASC;
-                   """
+        SELECT *
+        FROM question
+        WHERE id > (SELECT MAX(id) - 5 FROM question)
+        ORDER BY id ASC;
+        """
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_sorted_questions_asc(cursor: RealDictCursor, sort) -> list:
+def get_sorted_questions_asc(cursor: RealDictCursor, sort):
     cursor.execute(
-        sql.SQL("select * from {table} order by {col} {direction} limit 5 ").
-            format(col=sql.Identifier(sort),
-                   table=sql.Identifier('question'),
-                   direction=sql.SQL('ASC')
-                   ))
+        sql.SQL("SELECT * FROM {table} ORDER BY {col} {direction} LIMIT 5 ").format(col=sql.Identifier(sort),
+                                                                                    table=sql.Identifier('question'),
+                                                                                    direction=sql.SQL('ASC')))
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_sorted_questions_desc(cursor: RealDictCursor, sort) -> list:
+def get_sorted_questions_desc(cursor: RealDictCursor, sort):
     cursor.execute(
-        sql.SQL("select * from {table} order by {col} {direction} limit 5 ").
-            format(col=sql.Identifier(sort),
-                   table=sql.Identifier('question'),
-                   direction=sql.SQL('DESC')))
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_last_question(cursor: RealDictCursor) -> list:
-    query = """
-               SELECT MAX(id)
-               FROM question
-                """
-    cursor.execute(query)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_last_answer(cursor: RealDictCursor) -> list:
-    query = """
-               SELECT MAX(id)
-               FROM answer
-                """
-    cursor.execute(query)
-    return cursor.fetchall()
-
-
-@connection.connection_handler
-def get_last_comment(cursor: RealDictCursor) -> list:
-    query = """
-               SELECT MAX(id)
-               FROM comment
-                """
-    cursor.execute(query)
+        sql.SQL("SELECT * FROM {table} ORDER BY {col} {direction} LIMIT 5 ").format(col=sql.Identifier(sort),
+                                                                                    table=sql.Identifier('question'),
+                                                                                    direction=sql.SQL('DESC')))
     return cursor.fetchall()
 
 
 @connection.connection_handler
 def get_questions(cursor: RealDictCursor) -> list:
     query = """
-               SELECT *
-               FROM question
-               ORDER BY id"""
+       SELECT *
+       FROM question
+       ORDER BY id;
+       """
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -157,10 +128,9 @@ def get_questions(cursor: RealDictCursor) -> list:
 @connection.connection_handler
 def write_answers(cursor: RealDictCursor, new_answer):
     query = """
-                    INSERT INTO answer (id, submission_time, vote_number, question_id, message, image) 
-                    VALUES (%(id)s, date_trunc('seconds', localtimestamp), 
-                    %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
-                    """
+        INSERT INTO answer (submission_time, vote_number, question_id, message, image) 
+        VALUES (date_trunc('seconds', localtimestamp), %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
+        """
     cursor.execute(query, new_answer)
     cursor.close()
 
@@ -168,11 +138,9 @@ def write_answers(cursor: RealDictCursor, new_answer):
 @connection.connection_handler
 def write_comments(cursor: RealDictCursor, new_comment):
     query = """
-                    INSERT INTO comment (id, question_id, answer_id, message, submission_time, edited_count) 
-                    VALUES (%(id)s, %(question_id)s, %(answer_id)s, 
-                    %(message)s, date_trunc('seconds', localtimestamp), 
-                    %(edited_count)s);
-                    """
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count) 
+        VALUES (%(question_id)s, %(answer_id)s, %(message)s, date_trunc('seconds', localtimestamp), %(edited_count)s);
+        """
     cursor.execute(query, new_comment)
     cursor.close()
 
@@ -180,10 +148,10 @@ def write_comments(cursor: RealDictCursor, new_comment):
 @connection.connection_handler
 def write_question(cursor: RealDictCursor, new_question):
     query = """
-                INSERT INTO question (id, submission_time, view_number, vote_number, title, message, image) 
-                VALUES (%(id)s, date_trunc('seconds', localtimestamp), 
-                %(view_number)s, %(vote_number)s, %(title)s, %(message)s, %(image)s);
-                """
+        INSERT INTO question (submission_time, view_number, vote_number, title, message, image) 
+        VALUES (date_trunc('seconds', localtimestamp), %(view_number)s, %(vote_number)s, 
+        %(title)s, %(message)s, %(image)s);
+        """
     cursor.execute(query, new_question)
     cursor.close()
 
@@ -191,11 +159,11 @@ def write_question(cursor: RealDictCursor, new_question):
 @connection.connection_handler
 def edit_question(cursor: RealDictCursor, new_question):
     query = """
-                UPDATE question 
-                SET id= %(id)s, submission_time = date_trunc('seconds', localtimestamp), view_number= %(view_number)s, 
-                vote_number= %(vote_number)s, title=%(title)s, message=%(message)s, image=%(image)s
-                WHERE id IN (%(id)s);
-                """
+        UPDATE question 
+        SET id= %(id)s, submission_time = date_trunc('seconds', localtimestamp), view_number= %(view_number)s, 
+        vote_number= %(vote_number)s, title=%(title)s, message=%(message)s, image=%(image)s
+        WHERE id IN (%(id)s);
+        """
     cursor.execute(query, new_question)
     cursor.close()
 
@@ -203,11 +171,13 @@ def edit_question(cursor: RealDictCursor, new_question):
 @connection.connection_handler
 def delete_question(cursor: RealDictCursor, question_id):
     query = """
-
+        DELETE FROM comment WHERE answer_id IN (%s);
+        DELETE FROM answer WHERE question_id IN (%s);
         DELETE FROM comment WHERE question_id IN (%s);
-        DELETE FROM question  WHERE id IN (%s);
-            """
-    cursor.execute(query, (question_id, question_id))
+        DELETE FROM question_tag WHERE question_id IN (%s);
+        DELETE FROM question WHERE id IN (%s); 
+        """
+    cursor.execute(query, (question_id, question_id, question_id, question_id, question_id))
     cursor.close()
 
 
@@ -216,7 +186,7 @@ def delete_answer(cursor: RealDictCursor, answer_id):
     query = """
         DELETE FROM comment WHERE answer_id IN (%s);
         DELETE FROM answer WHERE id IN (%s);
-            """
+        """
     cursor.execute(query, (answer_id, answer_id))
     cursor.close()
 
@@ -225,92 +195,97 @@ def delete_answer(cursor: RealDictCursor, answer_id):
 def delete_comment(cursor: RealDictCursor, comment_id):
     query = """
         DELETE FROM comment WHERE id IN (%s);
-            """
-    cursor.execute(query, (comment_id,))
+        """
+    cursor.execute(query, (comment_id, ))
     cursor.close()
 
 
-@connection.connection_handler
-def delete_comment_by_question_id(cursor: RealDictCursor, question_id):
-    query = """
-            DELETE FROM comment WHERE question_id IN (%s);
-            """
-    cursor.execute(query, (question_id,))
-    cursor.close()
+# @connection.connection_handler
+# def delete_comment_by_question_id(cursor: RealDictCursor, question_id):
+#     query = """
+#         DELETE FROM comment WHERE question_id IN (%s);
+#         """
+#     cursor.execute(query, question_id)
+#     cursor.close()
+#
+#
+# @connection.connection_handler
+# def delete_comment_by_answer_id(cursor: RealDictCursor, answer_id):
+#     query = """
+#         DELETE FROM comment WHERE answer_id IN (%s);
+#         """
+#     cursor.execute(query, answer_id)
+#     cursor.close()
 
 
 @connection.connection_handler
-def delete_comment_by_answer_id(cursor: RealDictCursor, answer_id):
+def search_by_word(cursor: RealDictCursor, search):
     query = """
-            DELETE FROM comment WHERE answer_id IN (%s);
-            """
-    cursor.execute(query, (answer_id,))
-    cursor.close()
-
-
-@connection.connection_handler
-def search_by_word(cursor: RealDictCursor, search: str) -> list:
-    query = """
-               SELECT *
-               FROM question
-               WHERE title LIKE %(key)s OR message LIKE %(key)s; """
+        SELECT *
+        FROM question
+        WHERE title LIKE %(key)s OR message LIKE %(key)s;
+        """
     cursor.execute(query, {"key": '%' + search + '%'})
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_tag_by_question_id(cursor: RealDictCursor, question_id) -> list:
+def get_tag_by_question_id(cursor: RealDictCursor, question_id):
     query = """
         SELECT tag_id
         FROM question_tag
-        where question_id IN (%s);"""
-    cursor.execute(query, (question_id,))
+        where question_id IN (%s);
+        """
+    cursor.execute(query, question_id)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_tag_by_id(cursor: RealDictCursor, tag_id) -> list:
+def get_tag_by_id(cursor: RealDictCursor, tag_id):
     query = """
         SELECT *
         FROM tag
-        where id IN (%s);"""
-    cursor.execute(query, (tag_id,))
+        where id IN (%s);
+        """
+    cursor.execute(query, tag_id)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def get_last_tag(cursor: RealDictCursor) -> list:
+def get_last_tag(cursor: RealDictCursor):
     query = """
-               SELECT MAX(id)
-               FROM tag
-                """
+        SELECT MAX(id)
+        FROM tag;
+        """
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def add_new_tag(cursor: RealDictCursor, tags) -> list:
+def add_new_tag(cursor: RealDictCursor, tags):
     query = """
         INSERT INTO tag (id, name) 
-        VALUES (%(id)s, %(name)s);"""
+        VALUES (%(id)s, %(name)s);
+        """
     cursor.execute(query, tags)
     cursor.close()
 
 
 @connection.connection_handler
-def get_question_id(cursor: RealDictCursor, id) -> list:
+def get_question_id(cursor: RealDictCursor, id):
     query = """
         SELECT question_id
-        FROM question_tag WHERE tag_id IN (%s);"""
+        FROM question_tag WHERE tag_id IN (%s);
+        """
     cursor.execute(query, (id,))
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def add_question_id_to_tag(cursor: RealDictCursor, question_id, tag_id) -> list:
+def add_question_id_to_tag(cursor: RealDictCursor, question_id, tag_id):
     query = """
     INSERT INTO question_tag (question_id, tag_id)
-    VALUES ((%s), (%s)) 
+    VALUES ((%s), (%s));
     """
     cursor.execute(query, (question_id, tag_id))
     cursor.close()
@@ -320,29 +295,30 @@ def add_question_id_to_tag(cursor: RealDictCursor, question_id, tag_id) -> list:
 def get_new_user(cursor: RealDictCursor, new_user):
     query = """
         INSERT INTO users (username, registration_date,
-         count_of_questions, count_of_answers, count_of_comments, reputation)
+        count_of_questions, count_of_answers, count_of_comments, reputation)
         VALUES (%(username)s, date_trunc('second', localtimestamp), 
-        %(count_of_questions)s, %(count_of_answers)s, %(count_of_comments)s, %(reputation)s)"""
+        %(count_of_questions)s, %(count_of_answers)s, %(count_of_comments)s, %(reputation)s);
+        """
     cursor.execute(query, new_user)
     cursor.close()
 
 
 @connection.connection_handler
-def get_all_tags(cursor: RealDictCursor) -> list:
+def get_all_tags(cursor: RealDictCursor):
     query = """
         SELECT name, count(name) AS usage
         FROM tag
-        GROUP BY name
-        ;"""
+        GROUP BY name;
+        """
     cursor.execute(query)
     return cursor.fetchall()
 
 
 @connection.connection_handler
-def delete_tag_by_id(cursor: RealDictCursor, tag_id) -> list:
+def delete_tag_by_id(cursor: RealDictCursor, tag_id):
     query = """
-            DELETE FROM question_tag WHERE tag_id IN (%s);
-            DELETE FROM tag WHERE id IN (%s);
-            """
-    cursor.execute(query, (tag_id,tag_id))
+        DELETE FROM question_tag WHERE tag_id IN (%s);
+        DELETE FROM tag WHERE id IN (%s);
+        """
+    cursor.execute(query, (tag_id, tag_id))
     cursor.close()
