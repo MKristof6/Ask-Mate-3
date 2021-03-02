@@ -60,14 +60,10 @@ def new_answer_comment(answer_id):
 
 @app.route("/add-question", methods=['GET', 'POST'])
 def add_question():
-    last_question = data_manager.get_last_question()
-    for q in last_question:
-        last_id = q['max']
     question = {}
     if request.method == 'POST':
         question['title'] = request.form['title']
         question['message'] = request.form['message']
-        question['id'] = int(last_id) + 1
         question['submission_time'] = 0
         question['view_number'] = 0
         question['vote_number'] = 0
@@ -148,14 +144,7 @@ def answer():
     answer = {}
     if request.method == 'POST':
         question_id = request.form['question_id']
-        last_answer = data_manager.get_last_answer()
-        for a in last_answer:
-            last_id = a['max']
         answer['message'] = request.form['answer']
-        if last_id:
-            answer['id'] = int(last_id) + 1
-        else:
-            answer['id'] = 1
         answer['submission_time'] = 0
         answer['vote_number'] = 0
         with open("fullpath.txt") as path:
@@ -176,14 +165,7 @@ def comment():
     if request.method == 'POST':
         question_id = request.form['question_id']
         answer_id = request.form['answer_id']
-        last_comment = data_manager.get_last_comment()
-        for c in last_comment:
-            last_id = c['max']
         comment['message'] = request.form['comment']
-        if last_id:
-            comment['id'] = int(last_id) + 1
-        else:
-            comment['id'] = 1
         comment['submission_time'] = 0
         comment['edited_count'] = 0
         if question_id != 'None':
@@ -201,9 +183,17 @@ def comment():
         return render_template("comment.html")
 
 
-@app.route("/question/<question_id>/delete")
+@app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
-    data_manager.delete_question(question_id)
+    answers = data_manager.get_all_answers()
+    for a in answers:
+        if a['question_id'] == int(question_id):
+            comments = data_manager.get_all_comments()
+            for c in comments:
+                if a['id'] == c['answer_id']:
+                    comment_id = c['id']
+                    data_manager.delete_comment(comment_id)
+    data_manager.delete_question_all(question_id)
     return redirect("/")
 
 
@@ -327,6 +317,7 @@ def login():
 def logout():
     session.pop('username')
     return redirect('/')
+
 
 @app.route('/tags')
 def tags():
