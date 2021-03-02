@@ -263,6 +263,26 @@ def vote_down_question(question_id):
         return redirect('/')
 
 
+@app.route('/question/<question_id>/upvote-answer/<answer_id>', methods=['GET', 'POST'])
+def upvote_answer(question_id, answer_id):
+    if request.method == 'POST':
+        answers = data_manager.get_answers_by_question_id(question_id)
+        for a in answers:
+            if a['id'] == int(answer_id):
+                data_manager.up_vote(answer_id)
+        return redirect(f'/question/{question_id}')
+
+
+@app.route('/question/<question_id>/downvote-answer/<answer_id>', methods=['GET', 'POST'])
+def downvote_answer(question_id, answer_id):
+    if request.method == 'POST':
+        answers = data_manager.get_answers_by_question_id(question_id)
+        for a in answers:
+            if a['id'] == int(answer_id):
+                data_manager.down_vote(answer_id)
+        return redirect(f'/question/{question_id}')
+
+
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
 def new_tag(question_id):
     if request.method == 'POST':

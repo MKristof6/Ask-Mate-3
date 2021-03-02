@@ -201,6 +201,27 @@ def edit_question(cursor: RealDictCursor, new_question):
 
 
 @connection.connection_handler
+def up_vote(cursor: RealDictCursor, answer_id):
+    query = """
+                UPDATE answer
+                SET vote_number = vote_number +1
+                WHERE id = (%s);
+                """
+    cursor.execute(query, answer_id)
+    cursor.close()
+
+@connection.connection_handler
+def down_vote(cursor: RealDictCursor, answer_id):
+    query = """
+                UPDATE answer
+                SET vote_number = vote_number -1
+                WHERE id = (%s);
+                """
+    cursor.execute(query, answer_id)
+    cursor.close()
+
+
+@connection.connection_handler
 def delete_question(cursor: RealDictCursor, question_id):
     query = """
 
