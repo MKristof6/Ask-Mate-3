@@ -285,7 +285,7 @@ def users_list():
 
 
 @app.route('/user/<user_id>')
-def user_list(user_id):
+def user_page(user_id):
     user = data_manager.get_user(user_id)
     questions = data_manager.get_user_question(user_id)
     answers = data_manager.get_user_answers(user_id)

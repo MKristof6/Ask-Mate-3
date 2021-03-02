@@ -5,6 +5,7 @@
     <title>User details</title>
 </head>
 <body>
+<h1> User detalis</h1>
 {% for item in user.keys() %}
                     <th style="color: white">
                         {{ item }}
@@ -18,5 +19,27 @@
                     </td>
             {% endfor %}
         </tr>
+
+<h1> Questions asked by the user</h1>
+<h2>
+
+    {% for q in question %}
+        {{ q.title }}
+    {% endfor %}
+
+</h2>
+<h1> Anwers by the user</h1>
+
+{% for answer in answers %}
+    <p class="answer"> {{ answer.message }} </p>
+{% endfor %}
+
+
+<h1> Comments by the user</h1>
+{% for comment in comments %}
+        <h4 id="comment"> {{ comment.message }} </h4>
+{% endfor %}
+
+
 </body>
 </html>
