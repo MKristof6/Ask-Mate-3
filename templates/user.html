@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>User details</title>
+    <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
 </head>
 <body>
+{% include 'userbar.html' %}
 <h1> User detalis</h1>
 {% for item in user.keys() %}
                     <th style="color: white">
