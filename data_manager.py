@@ -317,6 +317,7 @@ def get_new_user(cursor: RealDictCursor, new_user):
     query = """
         INSERT INTO users (username, registration_date,
          count_of_questions, count_of_answers, count_of_comments, reputation)
-        VALUES (%(username)s, date_trunc('second', localtimestamp))"""
+        VALUES (%(username)s, date_trunc('second', localtimestamp), 
+        %(count_of_questions)s, %(count_of_answers)s, %(count_of_comments)s, %(reputation)s)"""
     cursor.execute(query, new_user)
     cursor.close()

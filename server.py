@@ -287,6 +287,10 @@ def registration():
     user = {}
     if request.method == 'POST':
         user['username'] = request.form['username']
+        user['count_of_questions'] = 0
+        user['count_of_answers'] = 0
+        user['count_of_comments'] = 0
+        user['reputation'] = 0
         data_manager.get_new_user(user)
         return redirect('/')
     return render_template('registration.html')
