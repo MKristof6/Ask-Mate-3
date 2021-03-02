@@ -267,11 +267,9 @@ def vote_down_question(question_id):
 def upvote_answer(question_id, answer_id):
     if request.method == 'POST':
         answers = data_manager.get_answers_by_question_id(question_id)
-        data_manager.delete_answer(answer_id)
-        for answer in answers:
-            if answer['id'] == answer_id:
-                answer['vote_number'] += 1
-        data_manager.write_answers(answer)
+        for a in answers:
+            if a['id'] == int(answer_id):
+                data_manager.up_vote(answer_id)
         return redirect(f'/question/{question_id}')
 
 
@@ -279,11 +277,9 @@ def upvote_answer(question_id, answer_id):
 def downvote_answer(question_id, answer_id):
     if request.method == 'POST':
         answers = data_manager.get_answers_by_question_id(question_id)
-        # data_manager.delete_answer(answer_id)
-        for answer in answers:
-            if answer['id'] == answer_id:
-               new_vote = answer['vote_number'] - 1
-        data_manager.edit_answer(answer_id, new_vote)
+        for a in answers:
+            if a['id'] == int(answer_id):
+                data_manager.down_vote(answer_id)
         return redirect(f'/question/{question_id}')
 
 
