@@ -279,11 +279,18 @@ def new_tag(question_id):
 
 
 @app.route('/users')
-def user_list():
+def users_list():
     users = data_manager.get_all_users()
     return render_template("users-list.html", users=users)
 
 
+@app.route('/user/<user_id>')
+def user_list(user_id):
+    user = data_manager.get_user(user_id)
+    questions = data_manager.get_user_question(user_id)
+    answers = data_manager.get_user_answers(user_id)
+    comments = data_manager.get_user_comments(user_id)
+    return render_template("user.html", user=user, questions=questions, answers=answers, comments=comments)
 
 
 if __name__ == "__main__":
