@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main page</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+<body>
+<h1>Used tags are:<br></h1>
+<h3>
+    {% for tags in all_tag %}
+            {{ tags['name']}} {{ ":" }} {{tags['usage'] }} <br>
+        {% endfor %}
+</h3>
+
+<a id="menu" href="/"> Go back to list </a>
+</body>
+</html>
