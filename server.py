@@ -243,7 +243,6 @@ def selector():
         return render_template("selector.html")
 
 
-
 @app.route('/question/<question_id>/vote-up', methods=['GET', 'POST'])
 def vote_up_question(question_id):
     if request.method == 'POST':
@@ -262,7 +261,6 @@ def vote_down_question(question_id):
             question['vote_number'] -= 1
             data_manager.edit_question(question)
         return redirect('/')
-
 
 
 @app.route('/question/<question_id>/new-tag', methods=['GET', 'POST'])
@@ -305,6 +303,11 @@ def login():
 def logout():
     session.pop('username')
     return redirect('/')
+
+@app.route('/tags')
+def tags():
+    all_tag = data_manager.get_all_tags()
+    return render_template("tags.html", all_tag=all_tag)
 
 
 if __name__ == "__main__":

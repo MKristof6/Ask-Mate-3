@@ -320,3 +320,13 @@ def get_new_user(cursor: RealDictCursor, new_user):
         VALUES (%(username)s, date_trunc('second', localtimestamp))"""
     cursor.execute(query, new_user)
     cursor.close()
+
+@connection.connection_handler
+def get_all_tags(cursor: RealDictCursor) -> list:
+    query = """
+        SELECT name, count(name) AS usage
+        FROM tag
+        GROUP BY name
+        ;"""
+    cursor.execute(query)
+    return cursor.fetchall()
