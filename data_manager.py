@@ -187,6 +187,7 @@ def write_question(cursor: RealDictCursor, new_question):
     cursor.execute(query, new_question)
     cursor.close()
 
+
 @connection.connection_handler
 def edit_question(cursor: RealDictCursor, new_question):
     query = """
@@ -216,7 +217,7 @@ def delete_answer(cursor: RealDictCursor, answer_id):
         DELETE FROM comment WHERE answer_id IN (%s);
         DELETE FROM answer WHERE id IN (%s);
             """
-    cursor.execute(query, (answer_id,answer_id))
+    cursor.execute(query, (answer_id, answer_id))
     cursor.close()
 
 
@@ -228,6 +229,7 @@ def delete_comment(cursor: RealDictCursor, comment_id):
     cursor.execute(query, (comment_id,))
     cursor.close()
 
+
 @connection.connection_handler
 def delete_comment_by_question_id(cursor: RealDictCursor, question_id):
     query = """
@@ -236,6 +238,7 @@ def delete_comment_by_question_id(cursor: RealDictCursor, question_id):
     cursor.execute(query, (question_id,))
     cursor.close()
 
+
 @connection.connection_handler
 def delete_comment_by_answer_id(cursor: RealDictCursor, answer_id):
     query = """
@@ -243,6 +246,7 @@ def delete_comment_by_answer_id(cursor: RealDictCursor, answer_id):
             """
     cursor.execute(query, (answer_id,))
     cursor.close()
+
 
 @connection.connection_handler
 def search_by_word(cursor: RealDictCursor, search: str) -> list:
@@ -298,7 +302,7 @@ def get_question_id(cursor: RealDictCursor, id) -> list:
     query = """
         SELECT question_id
         FROM question_tag WHERE tag_id IN (%s);"""
-    cursor.execute(query, (id, ))
+    cursor.execute(query, (id,))
     return cursor.fetchall()
 
 
@@ -321,6 +325,7 @@ def get_new_user(cursor: RealDictCursor, new_user):
     cursor.execute(query, new_user)
     cursor.close()
 
+
 @connection.connection_handler
 def get_all_tags(cursor: RealDictCursor) -> list:
     query = """
@@ -330,3 +335,13 @@ def get_all_tags(cursor: RealDictCursor) -> list:
         ;"""
     cursor.execute(query)
     return cursor.fetchall()
+
+
+@connection.connection_handler
+def delete_tag_by_id(cursor: RealDictCursor, tag_id) -> list:
+    query = """
+            DELETE FROM question_tag WHERE tag_id IN (%s);
+            DELETE FROM tag WHERE id IN (%s);
+            """
+    cursor.execute(query, (tag_id,tag_id))
+    cursor.close()

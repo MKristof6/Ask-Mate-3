@@ -310,6 +310,12 @@ def tags():
     return render_template("tags.html", all_tag=all_tag)
 
 
+@app.route("/question/<question_id>/delete_tag/<tag_id>", methods=['GET', 'POST'])
+def delete_tag(question_id, tag_id):
+    data_manager.delete_tag_by_id(tag_id)
+    return redirect(f"/question/{question_id}")
+
+
 if __name__ == "__main__":
     app.run(
         debug=True
