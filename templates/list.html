@@ -7,6 +7,9 @@
 </head>
 <body>
 <hr style="border-top: 3px solid white">
+{#<!-- {% if username in session %} -->#}
+    <a id="userlist" href="/users"> List of users</a>
+{#<!-- {% endif %} -->#}
 <form action="/" method="get">
     <label for="sort">Sort by:</label>
     <select id="sort" name="sort">
