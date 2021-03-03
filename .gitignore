@@ -1,5 +1,6 @@
 venv
 __pychace__
+__pychace__/
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/

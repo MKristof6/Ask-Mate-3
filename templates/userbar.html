@@ -5,15 +5,35 @@
     <title>User menu</title>
     <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
 </head>
-{# Ide kell majd egy IF be vagyok jelentkezve, akkor:  #}
-<div class="user-bar">
-    <div class="dropdown">
-        <h4>Logged in as <button class="dropbtn">User_name <img src="../static/images/caret-down-solid.svg" alt="Account information" height="16px" class="dropmark"></button></h4>
-        <div class="dropdown-content">
-            <a href="/">My profile</a> {# Ez fog oda irányítani, ahol a user saját kérdései, válaszai, reputációja van. #}
-            <a href="/logout">Logout</a> {# Logout route, aztán tud redirectelni, vagy frissíteni arra az oldalra, ahol éppen állunk???  #}
+{% if 'username' in session %}
+    <div class="user-bar">
+        <div class="dropdown">
+            <h4>Logged in as
+                <button class="dropbtn">{{ session.username }}</button>
+            </h4>
+            <div class="dropdown-content">
+                <a href="/user">My profile</a>
+                <a href="/logout">Logout</a>
+            </div>
         </div>
     </div>
-</div>
-{# ELIF nem vagyok bejelentkezve, ide jön egy sima login gomb #}
+{% else %}
+    <div class="user-bar">
+        <div class="dropdown">
+            <button class="loginbtn">Login</button>
+            <div class="logincontent">
+                <form id="loginform" action="/userbar" method="post">
+                    <label for="login">Username</label>
+                    <input type="text" name="username" id="login" autocomplete="off"><br>
+                    <label for="login">Password</label>
+                    <input type="text" name="password" id="login" autocomplete="off">
+                    <br>
+                    <button type="submit" name="submit">Log in</button>
+                    <br>
+                    <a style="float: right" href="/registration">Not registered yet?</a>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endif %}
 </html>

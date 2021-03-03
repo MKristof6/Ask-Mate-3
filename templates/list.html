@@ -6,11 +6,10 @@
     <link rel="stylesheet" type="text/css" href="../static/css/style.css">
 </head>
 <body>
-{{ message }}
 {% include 'userbar.html' %}
 <hr style="border-top: 3px solid white">
 {#<!-- {% if username in session %} -->#}
-    <a id="userlist" href="/users"> List of users</a>
+<a id="userlist" href="/users"> List of users</a>
 {#<!-- {% endif %} -->#}
 <form action="/" method="get">
     <label for="sort">Sort by:</label>
@@ -79,13 +78,12 @@
     {% endfor %}
 </table>
 <div id="menu">
-<a style="text-decoration: none; color: white" href="/add-question"> New question </a><br>
-<a style="text-decoration: none; color: white" href="/tags">Se all tags</a>
+    <a style="text-decoration: none; color: white" href="/add-question"> New question </a><br>
+    <a style="text-decoration: none; color: white" href="/tags">Se all tags</a>
 </div>
 <a href="/registration"> Registration </a><br>
 <a href="/login"> Login </a><br>
 <a href="/logout"> Logout </a>
-
 <form action="/" method="get">
     <label style="color: white">Search for word: </label>
     <input type="text" name="searched" id="search_name" required>

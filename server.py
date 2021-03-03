@@ -11,11 +11,8 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route("/")
 @app.route("/list")
 def main():
-    session_message = "You are not logged in"
     search = request.args.get('searched')
     sort = request.args.get('sort')
-    if 'username' in session:
-        session_message = 'Hello, %s' % escape(session['username'])
     if search:
         questions = data_manager.search_by_word(search)
     elif sort:
@@ -27,7 +24,7 @@ def main():
             questions = data_manager.get_sorted_questions_desc(sort)
     else:
         questions = data_manager.get_last_few_questions()
-    return render_template("list.html", questions=questions, message=session_message)
+    return render_template("list.html", questions=questions)
 
 
 @app.route("/question/<question_id>")
@@ -304,13 +301,11 @@ def registration():
     return render_template('registration.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/userbar', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         session['username'] = request.form['username']
-        # session['password'] = request.form['password']
-        return redirect('/')
-    return render_template('login.html')
+        return redirect("/")
 
 
 @app.route('/logout')
