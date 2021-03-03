@@ -8,27 +8,36 @@
 <body>
 {% include 'userbar.html' %}
 <table>
+{% set first = namespace(value=0) %}
     {% for user in users %}
+        {% if first.value == 0 %}
+            {% set first.value = first.value + 1 %}
             {% for item in user.keys() %}
+                {% if item != 'password' %}
                     <th style="color: white">
                         {{ item }}
                     </th>
+                {% endif %}
             {% endfor %}
+        {% endif %}
 
         <tr>
             {% for key in user.keys() %}
                     <td style="color: white">
                         {% if user[key] == user.username %}
                             <a id="data" href="/user/{{ user.id }}"> {{ user[key] }} </a>
-
-                        {% else %}
-                        {{ user[key] }}
+                         {% elif user[key] != user.password %}
+                            {{ user[key] }}
                     {% endif %}
                     </td>
             {% endfor %}
         </tr>
     {% endfor %}
 </table>
+
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/"> Go back to list </a>
+</div>
 
 </body>
 </html>
