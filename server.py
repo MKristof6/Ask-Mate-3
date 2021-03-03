@@ -162,14 +162,7 @@ def comment():
     if request.method == 'POST':
         question_id = request.form['question_id']
         answer_id = request.form['answer_id']
-        last_comment = data_manager.get_last_comment()
-        for c in last_comment:
-            last_id = c['max']
         comment['message'] = request.form['comment']
-        if last_id:
-            comment['id'] = int(last_id) + 1
-        else:
-            comment['id'] = 1
         comment['submission_time'] = 0
         comment['edited_count'] = 0
         if question_id != 'None':
@@ -187,9 +180,17 @@ def comment():
         return render_template("comment.html")
 
 
-@app.route("/question/<question_id>/delete")
+@app.route("/question/<question_id>/delete", methods=['GET', 'POST'])
 def delete_question(question_id):
-    data_manager.delete_question(question_id)
+    answers = data_manager.get_all_answers()
+    for a in answers:
+        if a['question_id'] == int(question_id):
+            comments = data_manager.get_all_comments()
+            for c in comments:
+                if a['id'] == c['answer_id']:
+                    comment_id = c['id']
+                    data_manager.delete_comment(comment_id)
+    data_manager.delete_question_all(question_id)
     return redirect("/")
 
 
@@ -227,7 +228,6 @@ def selector():
         return "image successfully uploaded"
     else:
         return render_template("selector.html")
-
 
 
 @app.route('/question/<question_id>/vote-up', methods=['GET', 'POST'])
