@@ -214,6 +214,9 @@ def write_question(cursor: RealDictCursor, new_question):
         INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id) 
         VALUES (date_trunc('seconds', localtimestamp), %(view_number)s, %(vote_number)s, 
         %(title)s, %(message)s, %(image)s, %(user_id)s);
+         UPDATE users
+                SET count_of_questions = users.count_of_questions +1
+                WHERE id = %(user_id)s;
         """
     cursor.execute(query, new_question)
     cursor.close()
