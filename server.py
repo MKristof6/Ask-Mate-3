@@ -296,7 +296,13 @@ def new_tag(question_id):
 def registration():
     user = {}
     if request.method == 'POST':
-        user['username'] = request.form['username']
+        users = data_manager.get_all_users()
+        for u in users:
+            if request.form['username'] in u['username']:
+                message = 'Username already used'
+                return render_template('registration.html', message=message)
+            else:
+                user['username'] = request.form['username']
         user['password'] = util.hash_password(request.form['password'])
         user['count_of_questions'] = 0
         user['count_of_answers'] = 0
