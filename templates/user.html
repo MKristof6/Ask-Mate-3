@@ -6,47 +6,83 @@
     <link rel="stylesheet" type="text/css" href="../../static/css/style.css">
 </head>
 <body>
-{% include 'userbar.html' %}
+
 <h1> User detalis</h1>
+{% include 'userbar.html' %}
+<table>
 {% set first = namespace(value=0) %}
-    {% for user in users %}
+    {% for u in user %}
         {% if first.value == 0 %}
             {% set first.value = first.value + 1 %}
-
-    {% for item in user.keys() %}
+            {% for item in u.keys() %}
+                 {% if item != 'password' %}
                     <th style="color: white">
                         {{ item }}
                     </th>
+                {% endif %}
             {% endfor %}
+            {% endif %}
 
         <tr>
-            {% for key in user.keys() %}
+            {% for key in u.keys() %}
+                 {% if key != 'password' %}
                     <td style="color: white">
-                        {{ user[key] }}
+                        {{ u[key] }}
+                    {% endif %}
                     </td>
             {% endfor %}
+
+          {% endfor %}
         </tr>
+</table>
 
 <h1> Questions asked by the user</h1>
 <h2>
+<table>
+<tr>
+    {% for q in questions %}
+        {% for u in user %}
+        {% if q['user_id'] == u.id  %}
 
-    {% for q in question %}
          <a id="data" href="/question/{{ question.id }}"> {{ q.title }} </a>
-    {% endfor %}
 
+         {% endif %}
+    {% endfor %}
+ {% endfor %}
+</tr>
+</table>
 </h2>
 <h1> Anwers by the user</h1>
-
+<table>
+<tr>
 {% for answer in answers %}
-    <p class="answer"> {{ answer.message }} </p>
-{% endfor %}
+    {% for u in user %}
+    {% if answer['user_id'] == u.id  %}
 
+    <p class="answer"> {{ answer.message }} </p>
+        <a id="data" href="/question/{{ answer['question_id'] }}"> Go to question </a>
+
+    {% endif %}
+{% endfor %}
+{% endfor %}
+</tr>
+
+</table>
 
 <h1> Comments by the user</h1>
+<table>
+<tr>
 {% for comment in comments %}
+    {% for u in user %}
+    {% if comment['user_id'] == u.id  %}
+
         <h4 id="comment"> {{ comment.message }} </h4>
+        <a id="data" href="/question/{{ comment['question_id'] }}"> Go to question </a>
+
+    {% endif %}
 {% endfor %}
-
-
+{% endfor %}
+</tr>
+</table>
 </body>
 </html>
