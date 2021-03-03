@@ -437,3 +437,14 @@ def get_password(cursor: RealDictCursor, username):
     cursor.execute(query, (username,))
     return cursor.fetchone()['password']
 
+
+@connection.connection_handler
+def add_view_number(cursor: RealDictCursor, question_id):
+    query = """
+                UPDATE question
+                SET view_number = view_number +1
+                WHERE id = (%s);
+                """
+    cursor.execute(query, (question_id,))
+    cursor.close()
+

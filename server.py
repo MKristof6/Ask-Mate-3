@@ -31,6 +31,7 @@ def main():
 
 @app.route("/question/<question_id>")
 def question(question_id):
+    data_manager.add_view_number(question_id)
     question = data_manager.get_question(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
     comments = data_manager.get_all_comments()
