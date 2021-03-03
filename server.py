@@ -302,8 +302,7 @@ def registration():
             if request.form['username'] in u['username']:
                 message = 'Username already used'
                 return render_template('registration.html', message=message)
-            else:
-                user['username'] = request.form['username']
+        user['username'] = request.form['username']
         user['password'] = util.hash_password(request.form['password'])
         user['count_of_questions'] = 0
         user['count_of_answers'] = 0
