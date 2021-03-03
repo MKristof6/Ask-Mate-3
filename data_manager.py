@@ -173,14 +173,14 @@ def get_user_id_by_name(cursor: RealDictCursor, username):
         WHERE username = (%s)"""
     cursor.execute(query, (username,))
     return cursor.fetchone()['id']
-    # return user_id['id']
 
 
 @connection.connection_handler
 def write_comments(cursor: RealDictCursor, new_comment):
     query = """
-        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count) 
-        VALUES (%(question_id)s, %(answer_id)s, %(message)s, date_trunc('seconds', localtimestamp), %(edited_count)s);
+        INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
+        VALUES (%(question_id)s, %(answer_id)s, %(message)s, date_trunc('seconds', localtimestamp),
+        %(edited_count)s, %(user_id)s);
         """
     cursor.execute(query, new_comment)
     cursor.close()
@@ -211,9 +211,9 @@ def down_vote(cursor: RealDictCursor, answer_id):
 @connection.connection_handler
 def write_question(cursor: RealDictCursor, new_question):
     query = """
-        INSERT INTO question (submission_time, view_number, vote_number, title, message, image) 
+        INSERT INTO question (submission_time, view_number, vote_number, title, message, image, user_id) 
         VALUES (date_trunc('seconds', localtimestamp), %(view_number)s, %(vote_number)s, 
-        %(title)s, %(message)s, %(image)s);
+        %(title)s, %(message)s, %(image)s, %(user_id)s);
         """
     cursor.execute(query, new_question)
     cursor.close()

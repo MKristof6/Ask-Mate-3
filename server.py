@@ -67,6 +67,7 @@ def add_question():
         with open("fullpath.txt") as path:
             image = path.readline()
         question['image'] = image
+        question['user_id'] = data_manager.get_user_id_by_name(session['username'])
         data_manager.write_question(question)
         with open("fullpath.txt", "w") as path:
             path.write("<null>")
@@ -166,6 +167,7 @@ def comment():
         comment['message'] = request.form['comment']
         comment['submission_time'] = 0
         comment['edited_count'] = 0
+        comment['user_id'] = data_manager.get_user_id_by_name(session['username'])
         if question_id != 'None':
             comment['question_id'] = question_id
             comment['answer_id'] = None

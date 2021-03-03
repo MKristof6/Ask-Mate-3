@@ -11,6 +11,7 @@
     <label for="comment">New comment:</label><br>
     <textarea id="comment" name="comment" rows="4" cols="60" autofocus required></textarea>
     <input name="question_id" id="question_id" value="{{ question_id }}" type="hidden">
+    <input name="user_id" id="user_id" value="{{ session.username }}" type="hidden">
     <br>
      <input name="answer_id" id="answer_id" value="{{ answer_id }}" type="hidden">
     <br>
