@@ -9,15 +9,11 @@
     <div class="user-bar">
         <div class="dropdown">
             <h4>Logged in as
-                <button class="dropbtn">{{ username }}<img src="../static/images/caret-down-solid.svg"
-                                                           alt="Account information"
-                                                           height="16px" class="dropmark"></button>
+                <button class="dropbtn">{{ session.username }}</button>
             </h4>
             <div class="dropdown-content">
-                <a href="/">My profile</a>
-                {# Ez fog oda irányítani, ahol a user saját kérdései, válaszai, reputációja van. #}
+                <a href="/user">My profile</a>
                 <a href="/logout">Logout</a>
-                {# Logout route, aztán tud redirectelni, vagy frissíteni arra az oldalra, ahol éppen állunk???  #}
             </div>
         </div>
     </div>
@@ -31,9 +27,10 @@
                     <input type="text" name="username" id="login" autocomplete="off"><br>
                     <label for="login">Password</label>
                     <input type="text" name="password" id="login" autocomplete="off">
-                    <button type="submit" name="submit">Submit</button>
                     <br>
-                    <a href="/registration">Not registered yet</a>
+                    <button type="submit" name="submit">Log in</button>
+                    <br>
+                    <a style="float: right" href="/registration">Not registered yet?</a>
                 </form>
             </div>
         </div>

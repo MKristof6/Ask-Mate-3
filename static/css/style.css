@@ -195,9 +195,6 @@ label {
     display: block;
 }
 
-.dropmark {
-    fill: white;
-}
 
 .loginbtn {
     font: 16px Helvetica;
@@ -210,8 +207,8 @@ label {
     text-align: left;
     border-radius: 12px;
     position: absolute;
-    top: 50px;
-    right: 120px;
+    top: 30px;
+    right: 60px;
 }
 
 .loginbtn:hover {
