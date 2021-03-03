@@ -2,6 +2,8 @@ from flask import Flask, redirect, render_template, request, session, escape
 import data_manager
 from werkzeug.utils import secure_filename
 import os
+import bcrypt
+import util
 
 app = Flask(__name__)
 app.config['UPLOAD_IMAGE'] = "static/uploaded_images"
@@ -295,11 +297,12 @@ def registration():
     user = {}
     if request.method == 'POST':
         user['username'] = request.form['username']
+        user['password'] = util.hash_password(request.form['password'])
         user['count_of_questions'] = 0
         user['count_of_answers'] = 0
         user['count_of_comments'] = 0
         user['reputation'] = 0
-        data_manager.get_new_user(user)
+        data_manager.add_user(user)
         return redirect('/')
     return render_template('registration.html')
 
@@ -307,7 +310,9 @@ def registration():
 @app.route('/userbar', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        session['username'] = request.form['username']
+        hash_password = data_manager.get_password(request.form['username'])
+        if util.verify_password(request.form['password'], hash_password):
+            session['username'] = request.form['username']
         return redirect("/")
 
 
