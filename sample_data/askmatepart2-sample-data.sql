@@ -95,7 +95,8 @@ CREATE TABLE users
     count_of_questions integer,
     count_of_answers   integer,
     count_of_comments  integer,
-    reputation         integer
+    reputation         integer,
+    password           text
 );
 
 
