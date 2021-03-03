@@ -160,6 +160,9 @@ def write_answers(cursor: RealDictCursor, new_answer):
         INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id) 
         VALUES (date_trunc('seconds', localtimestamp), %(vote_number)s, %(question_id)s,
         %(message)s, %(image)s, %(user_id)s);
+        UPDATE users
+                SET count_of_answers = users.count_of_answers +1
+                WHERE id = %(user_id)s;
         """
     cursor.execute(query, new_answer)
     cursor.close()
@@ -181,6 +184,9 @@ def write_comments(cursor: RealDictCursor, new_comment):
         INSERT INTO comment (question_id, answer_id, message, submission_time, edited_count, user_id) 
         VALUES (%(question_id)s, %(answer_id)s, %(message)s, date_trunc('seconds', localtimestamp),
         %(edited_count)s, %(user_id)s);
+        UPDATE users
+                SET count_of_comments = users.count_of_comments +1
+                WHERE id = %(user_id)s;
         """
     cursor.execute(query, new_comment)
     cursor.close()
