@@ -86,8 +86,8 @@ def get_last_few_questions(cursor: RealDictCursor) -> list:
     query = """
                    SELECT *
                    FROM question
-                   WHERE id > (SELECT MAX(id) - 5 FROM question)
-                   ORDER BY id ASC;
+                   ORDER BY submission_time DESC
+                   LIMIT 5;
                    """
     cursor.execute(query)
     return cursor.fetchall()
