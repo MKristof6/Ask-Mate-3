@@ -75,9 +75,13 @@
     {% endfor %}
 </table>
 <div id="menu">
-    <a style="text-decoration: none; color: white" href="/add-question"> New question </a><br><br>
-    <a style="text-decoration: none; color: white" href="/tags">Se all tags</a><br>
-    <a style="text-decoration: none; color: white" id="userlist" href="/users"> See all users</a>
+    {% if 'username' in session %}
+        <a style="text-decoration: none; color: white" href="/add-question"> New question </a><br><br>
+    {% endif %}
+    <a style="text-decoration: none; color: white" href="/tags">See all tags</a><br>
+    {% if 'username' in session %}
+        <a style="text-decoration: none; color: white" id="userlist" href="/users"> See all users</a>
+    {% endif %}
 </div>
 <form action="/" method="get">
     <label style="color: white">Search for word: </label>

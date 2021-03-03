@@ -148,6 +148,7 @@ def answer():
             image = path.readline()
         answer['image'] = image
         answer['question_id'] = question_id
+        answer['user_id'] = data_manager.get_user_id_by_name(session['username'])
         data_manager.write_answers(answer)
         with open("fullpath.txt", "w") as path:
             path.write("<null>")

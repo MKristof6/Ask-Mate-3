@@ -11,6 +11,7 @@
     <label for="add-answer">New answer:</label><br>
     <textarea id="add-answer" name="answer" rows="4" cols="60" autofocus required></textarea>
     <input name="question_id" id="question_id" value="{{ question_id }}" type="hidden"><br>
+    <input name="user_id" id="user_id" value="{{ session.username }}" type="hidden"><br>
     <p>Select image to upload:</p>
     <script>
         function openwnd() {

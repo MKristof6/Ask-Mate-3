@@ -157,11 +157,23 @@ def get_questions(cursor: RealDictCursor) -> list:
 @connection.connection_handler
 def write_answers(cursor: RealDictCursor, new_answer):
     query = """
-        INSERT INTO answer (submission_time, vote_number, question_id, message, image) 
-        VALUES (date_trunc('seconds', localtimestamp), %(vote_number)s, %(question_id)s, %(message)s, %(image)s);
+        INSERT INTO answer (submission_time, vote_number, question_id, message, image, user_id) 
+        VALUES (date_trunc('seconds', localtimestamp), %(vote_number)s, %(question_id)s,
+        %(message)s, %(image)s, %(user_id)s);
         """
     cursor.execute(query, new_answer)
     cursor.close()
+
+
+@connection.connection_handler
+def get_user_id_by_name(cursor: RealDictCursor, username):
+    query = """
+        SELECT id
+        FROM users
+        WHERE username = (%s)"""
+    cursor.execute(query, (username,))
+    return cursor.fetchone()['id']
+    # return user_id['id']
 
 
 @connection.connection_handler
@@ -415,8 +427,4 @@ def get_user_comments(cursor: RealDictCursor, user_id):
         """
     cursor.execute(query, (user_id, ))
     return cursor.fetchall()
-
-
-
-
 
