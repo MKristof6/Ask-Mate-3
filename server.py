@@ -241,8 +241,7 @@ def vote_up_question(question_id):
     if request.method == 'POST':
         questions = data_manager.get_question(question_id)
         for question in questions:
-            question['vote_number'] += 1
-            data_manager.edit_question(question)
+            data_manager.up_vote_question(question)
         return redirect('/')
 
 
@@ -251,8 +250,7 @@ def vote_down_question(question_id):
     if request.method == 'POST':
         questions = data_manager.get_question(question_id)
         for question in questions:
-            question['vote_number'] -= 1
-            data_manager.edit_question(question)
+            data_manager.down_vote_question(question)
         return redirect('/')
 
 
@@ -260,9 +258,10 @@ def vote_down_question(question_id):
 def upvote_answer(question_id, answer_id):
     if request.method == 'POST':
         answers = data_manager.get_answers_by_question_id(question_id)
+        user_id = data_manager.get_user_id_by_name(session['username'])
         for a in answers:
             if a['id'] == int(answer_id):
-                data_manager.up_vote(answer_id)
+                data_manager.up_vote_answer(answer_id, user_id)
         return redirect(f'/question/{question_id}')
 
 
@@ -270,9 +269,10 @@ def upvote_answer(question_id, answer_id):
 def downvote_answer(question_id, answer_id):
     if request.method == 'POST':
         answers = data_manager.get_answers_by_question_id(question_id)
+        user_id = data_manager.get_user_id_by_name(session['username'])
         for a in answers:
             if a['id'] == int(answer_id):
-                data_manager.down_vote(answer_id)
+                data_manager.down_vote_answer(answer_id, user_id)
         return redirect(f'/question/{question_id}')
 
 

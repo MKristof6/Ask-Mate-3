@@ -191,26 +191,58 @@ def write_comments(cursor: RealDictCursor, new_comment):
     cursor.execute(query, new_comment)
     cursor.close()
 
+@connection.connection_handler
+def up_vote_question(cursor: RealDictCursor, question):
+    query = """
+                UPDATE question
+                SET vote_number = vote_number +1
+                WHERE id = %(id)s;
+                UPDATE users
+                SET reputation = reputation +5
+                WHERE id = %(user_id)s;
+                """
+    cursor.execute(query, question)
+    cursor.close()
 
 @connection.connection_handler
-def up_vote(cursor: RealDictCursor, answer_id):
+def down_vote_question(cursor: RealDictCursor, question):
     query = """
-                UPDATE answer
-                SET vote_number = vote_number +1
-                WHERE id = (%s);
+                UPDATE question
+                SET vote_number = vote_number -1
+                WHERE id = %(id)s;
+                UPDATE users
+                SET reputation = reputation -2
+                WHERE id = %(user_id)s;
                 """
-    cursor.execute(query, (answer_id,))
+    cursor.execute(query, question)
     cursor.close()
 
 
 @connection.connection_handler
-def down_vote(cursor: RealDictCursor, answer_id):
+def up_vote_answer(cursor: RealDictCursor, answer_id, user_id):
+    query = """
+                UPDATE answer
+                SET vote_number = vote_number +1
+                WHERE id = (%s);
+                UPDATE users
+                SET reputation = reputation +10
+                WHERE id = (%s);
+                """
+    cursor.execute(query, (answer_id, user_id))
+    cursor.close()
+
+
+@connection.connection_handler
+def down_vote_answer(cursor: RealDictCursor, answer_id, user_id):
     query = """
                 UPDATE answer
                 SET vote_number = vote_number -1
                 WHERE id = (%s);
+                UPDATE users
+                SET reputation = reputation -2
+                WHERE id = (%s);
                 """
-    cursor.execute(query, (answer_id,))
+    cursor.execute(query, (answer_id, user_id))
     cursor.close()
 
 
