@@ -10,9 +10,9 @@
 <h2>{{ message }}</h2>
 <form action="/registration" method="post">
     <label for="registration">Username</label>
-    <input type="text" name="username" id="registration" autocomplete="off"><br>
+    <input type="text" name="username" id="registration" autocomplete="off" required><br>
     <label for="login">Password</label>
-    <input type="password" name="password" id="registration" autocomplete="off">
+    <input type="password" name="password" id="registration" autocomplete="off" required>
     <button type="submit" name="submit">Submit</button>
 </form>
 <a id="menu" href="/list">Go back to menu</a>

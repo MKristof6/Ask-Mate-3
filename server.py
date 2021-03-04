@@ -307,7 +307,7 @@ def registration():
     if request.method == 'POST':
         users = data_manager.get_all_users()
         for u in users:
-            if request.form['username'] in u['username']:
+            if request.form['username'] in u['username'] and request.form['username'] != '':
                 message = 'Username already used'
                 return render_template('registration.html', message=message)
         user['username'] = request.form['username']
