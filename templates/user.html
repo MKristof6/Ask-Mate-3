@@ -44,7 +44,7 @@
         {% for u in user %}
         {% if q['user_id'] == u.id  %}
 
-         <a id="data" href="/question/{{ question.id }}"> {{ q.title }} </a>
+         <a id="data" href="/question/{{ q.id }}"> {{ q.title }} </a>
 
          {% endif %}
     {% endfor %}
@@ -84,5 +84,8 @@
 {% endfor %}
 </tr>
 </table>
+<div id="menu">
+    <a style="text-decoration: none; color: white" href="/"> Go back to list </a>
+</div>
 </body>
 </html>

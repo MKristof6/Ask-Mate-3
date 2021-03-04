@@ -13,6 +13,10 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route("/")
 @app.route("/list")
 def main():
+    if 'username' in session:
+        user_id=data_manager.get_user_id_by_name(session['username'])
+    else:
+        user_id=""
     search = request.args.get('searched')
     sort = request.args.get('sort')
     if search:
@@ -26,7 +30,7 @@ def main():
             questions = data_manager.get_sorted_questions_desc(sort)
     else:
         questions = data_manager.get_last_few_questions()
-    return render_template("list.html", questions=questions)
+    return render_template("list.html", questions=questions, user_id=user_id)
 
 
 @app.route("/question/<question_id>")
