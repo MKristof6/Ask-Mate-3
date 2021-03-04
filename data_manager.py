@@ -457,3 +457,27 @@ def add_view_number(cursor: RealDictCursor, question_id):
     cursor.execute(query, (question_id,))
     cursor.close()
 
+
+@connection.connection_handler
+def accept_answer(cursor: RealDictCursor, answer_id):
+    query = """
+                UPDATE answer
+                SET acceptance = true
+                WHERE id = (%s);
+                """
+    cursor.execute(query, (answer_id,))
+    cursor.close()
+
+@connection.connection_handler
+def remove_acceptance(cursor: RealDictCursor, answer_id):
+    query = """
+                UPDATE answer
+                SET acceptance = false
+                WHERE id = (%s);
+                """
+    cursor.execute(query, (answer_id,))
+    cursor.close()
+
+
+
+
