@@ -32,16 +32,32 @@
     {% endif %}
 
     <h4 id="tags">Tags:
-    {% for tag in tags %}
-        {% for t in tag %}
-             <a class="downvote" href="/question/{{ q.id }}/delete_tag/{{ t.id }}"
-                            onclick="return confirm('Are you sure you want to delete this tag?')">{{ t.name }}</a>
-        {% endfor %}
-    {% endfor %}</h4>
 
-    <a class="button" href="/question/{{ q.id }}/delete"
-       onclick="return confirm('Are you sure you want to delete the question?')">Delete
-        question</a>
+        {% for q in question %}
+            {% if user_id == q.user_id %}
+                {% for tag in tags %}
+                    {% for t in tag %}
+                        <a class="downvote" href="/question/{{ q.id }}/delete_tag/{{ t.id }}"
+                           onclick="return confirm('Are you sure you want to delete this tag?')">{{ t.name }}</a>
+                    {% endfor %}
+                {% endfor %}
+            {% else %}
+                {% for tag in tags %}
+                    {% for t in tag %}
+                        <a class="button">{{ t.name }}</a>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+        {% endfor %}
+    </h4>
+
+    {% for q in question %}
+        {% if user_id == q.user_id %}
+            <a class="button" href="/question/{{ q.id }}/delete"
+               onclick="return confirm('Are you sure you want to delete the question?')">Delete
+                question</a>
+        {% endif %}
+    {% endfor %}
 
     {#<h5>Question comments:</h5>#}
     {% for comment in comments %}
@@ -74,22 +90,22 @@
             answer
         </button>
     </form>
-        <br>
-        <br>
-<div class="rate_answr">
+    <br>
+    <br>
+    <div class="rate_answr">
         <h4 id="comment">Rate answer:&nbsp;</h4>
 
-            <form action="/question/{{ question_id }}/downvote-answer/{{ answer.id }}" method="post">
-                <button class="downvote" type="submit">-</button>
-            </form>
-            &nbsp;
-            <form action="/question/{{ question_id }}/upvote-answer/{{ answer.id }}" method="post">
-                <button class="upvote" type="submit">+</button>
-            </form>
-        </div>
-        <br>
-        <br>
-        <a class="button" href="/answer/{{ answer.id }}/new-comment"> Add comment </a>
+        <form action="/question/{{ question_id }}/downvote-answer/{{ answer.id }}" method="post">
+            <button class="downvote" type="submit">-</button>
+        </form>
+        &nbsp;
+        <form action="/question/{{ question_id }}/upvote-answer/{{ answer.id }}" method="post">
+            <button class="upvote" type="submit">+</button>
+        </form>
+    </div>
+    <br>
+    <br>
+    <a class="button" href="/answer/{{ answer.id }}/new-comment"> Add comment </a>
 
 
     {#    <h5>Answer comments:</h5>#}
@@ -117,13 +133,21 @@
 
 <div id="menu">
     <a style="text-decoration: none; color: white" href="/"> Go back to list </a>
-    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/edit"> Edit question </a><br>
-    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-tag"> Add tag </a><br>
+    {% for q in question %}
+        {% if user_id == q.user_id %}
+            <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/edit"> Edit question </a>
+            <br>
+            <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-tag"> Add tag </a><br>
+        {% endif %}
+    {% endfor %}
     <a style="text-decoration: none; color: white" href="/tags"> See all tags </a><br>
     <br>
-    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-answer"> Add answer </a> <br>
-    <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-comment"> Add comment </a> <br>
-
+    {% if 'username' in session %}
+        <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-answer"> Add answer </a>
+        <br>
+        <a style="text-decoration: none; color: white" href="/question/{{ question_id }}/new-comment"> Add comment </a>
+        <br>
+    {% endif %}
 </div>
 
 
