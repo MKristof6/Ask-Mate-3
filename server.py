@@ -365,13 +365,17 @@ def user_page(user_id):
 
 @app.route('/question/<question_id>/<answer_id>/accept-answer')
 def acceptance(question_id, answer_id):
-    data_manager.accept_answer(answer_id)
+    answer = data_manager.get_answer_by_id(answer_id)
+    for a in answer:
+        data_manager.accept_answer(a)
     return redirect(f'/question/{question_id}')
 
 
 @app.route('/question/<question_id>/<answer_id>/remove-acceptance')
 def remove_acceptance(question_id, answer_id):
-    data_manager.remove_acceptance(answer_id)
+    answer = data_manager.get_answer_by_id(answer_id)
+    for a in answer:
+        data_manager.remove_acceptance(a)
     return redirect(f'/question/{question_id}')
 
 
