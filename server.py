@@ -307,7 +307,7 @@ def registration():
     if request.method == 'POST':
         users = data_manager.get_all_users()
         for u in users:
-            if request.form['username'] in u['username']:
+            if request.form['username'] in u['username'] and request.form['username'] != '':
                 message = 'Username already used'
                 return render_template('registration.html', message=message)
         user['username'] = request.form['username']
@@ -361,6 +361,19 @@ def user_page(user_id):
     answers = data_manager.get_user_answers(user_id)
     comments = data_manager.get_user_comments(user_id)
     return render_template("user.html", user=user, questions=questions, answers=answers, comments=comments)
+
+
+@app.route('/question/<question_id>/<answer_id>/accept-answer')
+def acceptance(question_id, answer_id):
+    data_manager.accept_answer(answer_id)
+    return redirect(f'/question/{question_id}')
+
+
+@app.route('/question/<question_id>/<answer_id>/remove-acceptance')
+def remove_acceptance(question_id, answer_id):
+    data_manager.remove_acceptance(answer_id)
+    return redirect(f'/question/{question_id}')
+
 
 
 if __name__ == "__main__":
