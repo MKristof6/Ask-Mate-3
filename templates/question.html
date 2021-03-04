@@ -23,8 +23,6 @@
     {% endfor %}
 </h3>
 
-{#<a href="/question/{{ question_id }}/vote-up">Vote up</a>#}
-{#<a href="/question/{{ question_id }}/vote-down">Vote down</a><br>#}
 
 {% for q in question %}
     {% if q.image != "<null>" %}
@@ -92,20 +90,22 @@
     </form>
     <br>
     <br>
-    <div class="rate_answr">
-        <h4 id="comment">Rate answer:&nbsp;</h4>
+    {% if 'username' in session %}
+        <div class="rate_answr">
+            <h4 id="comment">Rate answer:&nbsp;</h4>
 
-        <form action="/question/{{ question_id }}/downvote-answer/{{ answer.id }}" method="post">
-            <button class="downvote" type="submit">-</button>
-        </form>
-        &nbsp;
-        <form action="/question/{{ question_id }}/upvote-answer/{{ answer.id }}" method="post">
-            <button class="upvote" type="submit">+</button>
-        </form>
-    </div>
+            <form action="/question/{{ question_id }}/downvote-answer/{{ answer.id }}" method="post">
+                <button class="downvote" type="submit">-</button>
+            </form>
+            &nbsp;
+            <form action="/question/{{ question_id }}/upvote-answer/{{ answer.id }}" method="post">
+                <button class="upvote" type="submit">+</button>
+            </form>
+        </div>
     <br>
     <br>
-    <a class="button" href="/answer/{{ answer.id }}/new-comment"> Add comment </a>
+        <a class="button" href="/answer/{{ answer.id }}/new-comment"> Add comment </a>
+    {% endif %}
 
 
     {#    <h5>Answer comments:</h5>#}

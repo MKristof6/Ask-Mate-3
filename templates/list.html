@@ -40,20 +40,22 @@
         {% endif %}
         <tr>
             {% for key in question.keys() %}
-                {% if key != "image"  and key != 'user_id'%}
+                {% if key != "image"  and key != 'user_id' %}
                     <td style="color: white">
                         {% if question[key] == question.title %}
                             <a id="data" href="/question/{{ question.id }}"> {{ question[key] }} </a>
                         {% elif key== "vote_number" %}
                             <div class="container">
                                 {{ question.vote_number }} &ensp;
-                                <form action="/question/{{ question.id }}/vote-down" method="post">
-                                    <button class="downvote" type="submit">-</button>
-                                </form>
-                                &nbsp;
-                                <form action="/question/{{ question.id }}/vote-up" method="post">
-                                    <button class="upvote" type="submit">+</button>
-                                </form>
+                                {% if 'username' in session %}
+                                    <form action="/question/{{ question.id }}/vote-down" method="post">
+                                        <button class="downvote" type="submit">-</button>
+                                    </form>
+                                    &nbsp;
+                                    <form action="/question/{{ question.id }}/vote-up" method="post">
+                                        <button class="upvote" type="submit">+</button>
+                                    </form>
+                                {% endif %}
                             </div>
 
                         {% else %}
