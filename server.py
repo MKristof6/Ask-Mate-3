@@ -13,6 +13,10 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route("/")
 @app.route("/list")
 def main():
+    if 'username' in session:
+        user_id=data_manager.get_user_id_by_name(session['username'])
+    else:
+        user_id=""
     search = request.args.get('searched')
     sort = request.args.get('sort')
     if search:
@@ -26,11 +30,15 @@ def main():
             questions = data_manager.get_sorted_questions_desc(sort)
     else:
         questions = data_manager.get_last_few_questions()
-    return render_template("list.html", questions=questions)
+    return render_template("list.html", questions=questions, user_id=user_id)
 
 
 @app.route("/question/<question_id>")
 def question(question_id):
+    if 'username' in session:
+        user_id = data_manager.get_user_id_by_name(session['username'])
+    else:
+        user_id = ''
     data_manager.add_view_number(question_id)
     question = data_manager.get_question(question_id)
     answers = data_manager.get_answers_by_question_id(question_id)
@@ -40,7 +48,7 @@ def question(question_id):
     for id in tag_ids:
         tags.append(data_manager.get_tag_by_id(id['tag_id']))
     return render_template("question.html", question=question, question_id=question_id, answers=answers,
-                           comments=comments, tags=tags)
+                           comments=comments, tags=tags, user_id=user_id)
 
 
 @app.route("/question/<question_id>/new-answer")
