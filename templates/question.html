@@ -72,8 +72,11 @@
 <h1>Answers:</h1>
 
 {% for answer in answers %}
-
-    <p class="answer"> {{ answer.message }} </p>
+    <div style="display: flex; align-items:center">
+    {% if answer.acceptance == true %}
+        <img src="../static/images/approved.png" height="20px" alt="This answer was found useful by the author">
+    {% endif %}&nbsp;
+    <p class="answer"> {{ answer.message }} </p></div>
     {% if answer.image != "<null>" %}
         <br><img src="../static/uploaded_images/{{ answer.image }}" height="400"><br>
     {% endif %}
